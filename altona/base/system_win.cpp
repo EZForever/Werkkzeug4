@@ -2504,8 +2504,8 @@ void sInit(sInt flags,sInt xs,sInt ys)
       sHWND = sExternalWindow;
       RECT rect;
       GetWindowRect(sHWND,&rect);
-      xs = sAbs(rect.right-rect.left);
-      ys = sAbs(rect.top-rect.bottom);
+      xs = sAbs((sInt)(rect.right-rect.left));
+      ys = sAbs((sInt)(rect.top-rect.bottom));
     }
     else
     {

@@ -115,7 +115,7 @@ struct OfflineClient :
     settings.background_color = bkcolor;
     settings.windowless_frame_rate = 60;
 
-    if (!CefBrowserHost::CreateBrowser(winfo, this, url, settings, 0))
+    if (!CefBrowserHost::CreateBrowser(winfo, this, url, settings, 0, 0))
       return false;
 
     if (!PaintEvent.Wait(50000))
@@ -244,7 +244,7 @@ struct LiveClient :
     if (bkcolor < 0xff000000) 
       HasAlpha = true;
 
-    CefBrowserHost::CreateBrowser(winfo, this, url, settings, 0);       
+    CefBrowserHost::CreateBrowser(winfo, this, url, settings, 0, 0);       
   }
 
   ~LiveClient() override

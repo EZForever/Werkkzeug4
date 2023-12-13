@@ -168,7 +168,8 @@ sImage *sLoadImageWin32(sFile *file)
 
   Gdiplus::Status st;
   Gdiplus::Color background(0,0,0,0);
-  Gdiplus::Bitmap *gdibitmap = Gdiplus::Bitmap::FromStream(&sIStreamWrapper(file),TRUE);
+  sIStreamWrapper stream(file);
+  Gdiplus::Bitmap *gdibitmap = Gdiplus::Bitmap::FromStream(&stream,TRUE);
 
   HBITMAP hbmp=0;
   st = gdibitmap->GetHBITMAP(background,&hbmp);

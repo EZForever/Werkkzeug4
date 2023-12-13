@@ -1187,7 +1187,7 @@ void sMain()
   MyConfig = new Config;
   if (!MyConfig->Read(L"config.txt"))
   {
-    sFatal(MyConfig->GetError());
+    sFatal(L"could not load config.txt %s",MyConfig->GetError());
   }
 
   sAddDebugServer(MyConfig->HttpPort);
