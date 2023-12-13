@@ -1191,6 +1191,48 @@
     <ClInclude Include="cef\libcef_dll\wrapper_types.h">
       <Filter>libcef_dll</Filter>
     </ClInclude>
+    <ClInclude Include="cef\libcef_dll\cpptoc\dev_tools_message_observer_cpptoc.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\ctocpp\registration_ctocpp.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\shutdown_checker.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\ctocpp\resource_read_callback_ctocpp.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\ctocpp\resource_skip_callback_ctocpp.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_router_ctocpp.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_source_ctocpp.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_route_ctocpp.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_sink_ctocpp.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\cpptoc\media_observer_cpptoc.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\cpptoc\media_route_create_callback_cpptoc.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\cpptoc\media_sink_device_info_callback_cpptoc.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\cpptoc\resource_request_handler_cpptoc.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="cef\libcef_dll\cpptoc\cookie_access_filter_cpptoc.h">
+      <Filter>libcef_dll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cef\libcef_dll\base\cef_atomicops_x86_gcc.cc">
@@ -1686,6 +1728,48 @@
       <Filter>libcef_dll</Filter>
     </ClCompile>
     <ClCompile Include="cef\libcef_dll\wrapper\libcef_dll_wrapper2.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\cpptoc\dev_tools_message_observer_cpptoc.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\ctocpp\registration_ctocpp.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\shutdown_checker.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\ctocpp\resource_read_callback_ctocpp.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\ctocpp\resource_skip_callback_ctocpp.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_router_ctocpp.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_source_ctocpp.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_route_ctocpp.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_sink_ctocpp.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\cpptoc\media_observer_cpptoc.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\cpptoc\media_route_create_callback_cpptoc.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\cpptoc\media_sink_device_info_callback_cpptoc.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\cpptoc\resource_request_handler_cpptoc.cc">
+      <Filter>libcef_dll</Filter>
+    </ClCompile>
+    <ClCompile Include="cef\libcef_dll\cpptoc\cookie_access_filter_cpptoc.cc">
       <Filter>libcef_dll</Filter>
     </ClCompile>
   </ItemGroup>

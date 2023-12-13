@@ -263,10 +263,12 @@
     <ClInclude Include="cef\libcef_dll\cpptoc\client_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\completion_callback_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\context_menu_handler_cpptoc.h" />
+    <ClInclude Include="cef\libcef_dll\cpptoc\cookie_access_filter_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\cookie_visitor_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\cpptoc_ref_counted.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\cpptoc_scoped.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\delete_cookies_callback_cpptoc.h" />
+    <ClInclude Include="cef\libcef_dll\cpptoc\dev_tools_message_observer_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\dialog_handler_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\display_handler_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\domvisitor_cpptoc.h" />
@@ -281,6 +283,9 @@
     <ClInclude Include="cef\libcef_dll\cpptoc\keyboard_handler_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\life_span_handler_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\load_handler_cpptoc.h" />
+    <ClInclude Include="cef\libcef_dll\cpptoc\media_observer_cpptoc.h" />
+    <ClInclude Include="cef\libcef_dll\cpptoc\media_route_create_callback_cpptoc.h" />
+    <ClInclude Include="cef\libcef_dll\cpptoc\media_sink_device_info_callback_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\menu_model_delegate_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\navigation_entry_visitor_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\pdf_print_callback_cpptoc.h" />
@@ -294,6 +299,7 @@
     <ClInclude Include="cef\libcef_dll\cpptoc\resolve_callback_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\resource_bundle_handler_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\resource_handler_cpptoc.h" />
+    <ClInclude Include="cef\libcef_dll\cpptoc\resource_request_handler_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\response_filter_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\run_file_dialog_callback_cpptoc.h" />
     <ClInclude Include="cef\libcef_dll\cpptoc\scheme_handler_factory_cpptoc.h" />
@@ -344,6 +350,10 @@
     <ClInclude Include="cef\libcef_dll\ctocpp\image_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\jsdialog_callback_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\list_value_ctocpp.h" />
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_router_ctocpp.h" />
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_route_ctocpp.h" />
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_sink_ctocpp.h" />
+    <ClInclude Include="cef\libcef_dll\ctocpp\media_source_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\menu_model_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\navigation_entry_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\post_data_ctocpp.h" />
@@ -352,10 +362,13 @@
     <ClInclude Include="cef\libcef_dll\ctocpp\print_job_callback_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\print_settings_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\process_message_ctocpp.h" />
+    <ClInclude Include="cef\libcef_dll\ctocpp\registration_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\request_callback_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\request_context_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\request_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\resource_bundle_ctocpp.h" />
+    <ClInclude Include="cef\libcef_dll\ctocpp\resource_read_callback_ctocpp.h" />
+    <ClInclude Include="cef\libcef_dll\ctocpp\resource_skip_callback_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\response_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\run_context_menu_callback_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\scheme_registrar_ctocpp.h" />
@@ -402,6 +415,7 @@
     <ClInclude Include="cef\libcef_dll\ctocpp\xml_reader_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ctocpp\zip_reader_ctocpp.h" />
     <ClInclude Include="cef\libcef_dll\ptr_util.h" />
+    <ClInclude Include="cef\libcef_dll\shutdown_checker.h" />
     <ClInclude Include="cef\libcef_dll\transfer_util.h" />
     <ClInclude Include="cef\libcef_dll\wrapper\cef_browser_info_map.h" />
     <ClInclude Include="cef\libcef_dll\wrapper_types.h" />
@@ -427,8 +441,10 @@
     <ClCompile Include="cef\libcef_dll\cpptoc\client_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\completion_callback_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\context_menu_handler_cpptoc.cc" />
+    <ClCompile Include="cef\libcef_dll\cpptoc\cookie_access_filter_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\cookie_visitor_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\delete_cookies_callback_cpptoc.cc" />
+    <ClCompile Include="cef\libcef_dll\cpptoc\dev_tools_message_observer_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\dialog_handler_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\display_handler_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\domvisitor_cpptoc.cc" />
@@ -443,6 +459,9 @@
     <ClCompile Include="cef\libcef_dll\cpptoc\keyboard_handler_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\life_span_handler_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\load_handler_cpptoc.cc" />
+    <ClCompile Include="cef\libcef_dll\cpptoc\media_observer_cpptoc.cc" />
+    <ClCompile Include="cef\libcef_dll\cpptoc\media_route_create_callback_cpptoc.cc" />
+    <ClCompile Include="cef\libcef_dll\cpptoc\media_sink_device_info_callback_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\menu_model_delegate_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\navigation_entry_visitor_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\pdf_print_callback_cpptoc.cc" />
@@ -456,6 +475,7 @@
     <ClCompile Include="cef\libcef_dll\cpptoc\resolve_callback_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\resource_bundle_handler_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\resource_handler_cpptoc.cc" />
+    <ClCompile Include="cef\libcef_dll\cpptoc\resource_request_handler_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\response_filter_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\run_file_dialog_callback_cpptoc.cc" />
     <ClCompile Include="cef\libcef_dll\cpptoc\scheme_handler_factory_cpptoc.cc" />
@@ -504,6 +524,10 @@
     <ClCompile Include="cef\libcef_dll\ctocpp\image_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\jsdialog_callback_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\list_value_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_router_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_route_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_sink_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\ctocpp\media_source_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\menu_model_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\navigation_entry_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\post_data_ctocpp.cc" />
@@ -512,10 +536,13 @@
     <ClCompile Include="cef\libcef_dll\ctocpp\print_job_callback_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\print_settings_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\process_message_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\ctocpp\registration_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\request_callback_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\request_context_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\request_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\resource_bundle_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\ctocpp\resource_read_callback_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\ctocpp\resource_skip_callback_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\response_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\run_context_menu_callback_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\scheme_registrar_ctocpp.cc" />
@@ -561,6 +588,7 @@
     <ClCompile Include="cef\libcef_dll\ctocpp\x509cert_principal_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\xml_reader_ctocpp.cc" />
     <ClCompile Include="cef\libcef_dll\ctocpp\zip_reader_ctocpp.cc" />
+    <ClCompile Include="cef\libcef_dll\shutdown_checker.cc" />
     <ClCompile Include="cef\libcef_dll\transfer_util.cc" />
     <ClCompile Include="cef\libcef_dll\wrapper\cef_byte_read_handler.cc" />
     <ClCompile Include="cef\libcef_dll\wrapper\cef_closure_task.cc" />
@@ -584,21 +612,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
+  <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
