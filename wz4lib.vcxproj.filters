@@ -513,6 +513,12 @@
     <ClCompile Include="altona\wz4lib\werkkzeug4.wire.cpp">
       <Filter>wz4\wz4lib</Filter>
     </ClCompile>
+    <ClCompile Include="altona\base\graphics_dx11.cpp">
+      <Filter>altona\base</Filter>
+    </ClCompile>
+    <ClCompile Include="altona\base\graphics_blank.cpp">
+      <Filter>altona\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="altona\base\graphics.hpp">
@@ -979,6 +985,9 @@
     </ClInclude>
     <ClInclude Include="altona_config.hpp">
       <Filter>wz4\wz4frlib</Filter>
+    </ClInclude>
+    <ClInclude Include="altona\base\graphics_dx11_private.hpp">
+      <Filter>altona\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

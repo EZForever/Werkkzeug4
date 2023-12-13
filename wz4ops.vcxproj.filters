@@ -56,6 +56,9 @@
     <ClCompile Include="altona\base\windows.cpp">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="altona\base\graphics_dx11.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools\wz4ops\doc.hpp" />
@@ -94,6 +97,9 @@
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="altona\base\windows.hpp">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="altona\base\graphics_dx11_private.hpp">
       <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>

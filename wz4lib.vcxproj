@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClCompile Include="altona\base\devices_win.cpp" />
     <ClCompile Include="altona\base\graphics.cpp" />
+    <ClCompile Include="altona\base\graphics_blank.cpp" />
+    <ClCompile Include="altona\base\graphics_dx11.cpp" />
     <ClCompile Include="altona\base\graphics_dx9.cpp" />
     <ClCompile Include="altona\base\input2.cpp" />
     <ClCompile Include="altona\base\math.cpp" />
@@ -170,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="altona\base\graphics.hpp" />
+    <ClInclude Include="altona\base\graphics_dx11_private.hpp" />
     <ClInclude Include="altona\base\graphics_dx9_private.hpp" />
     <ClInclude Include="altona\base\input2.hpp" />
     <ClInclude Include="altona\base\math.hpp" />

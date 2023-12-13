@@ -11,14 +11,18 @@
 /***                                                                      ***/
 /****************************************************************************/
 
+#pragma comment (lib, "dxgi.lib")
+#pragma comment (lib, "d3d11.lib")
+#pragma comment (lib, "d3dcompiler.lib")
+
 #include "base/types.hpp"
 #if sRENDERER == sRENDER_DX11
 
 #undef new
 #include <windows.h>
 #include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10math.h>
+//#include <d3dx11.h>
+//#include <d3dx10math.h>
 #include <d3dcompiler.h>
 #define new sDEFINE_NEW
 
@@ -36,6 +40,10 @@ void sExitGfxCommon();
 extern sInt sSystemFlags;
 
 #define sDXRELEASE(x) { if(x) DXErr(x->Release()); x=0; }
+
+#ifndef FLT_MAX
+#define FLT_MAX 3.402823466e+38F
+#endif
 
 extern HINSTANCE WInstance;
 
@@ -380,6 +388,7 @@ void InitGFX(sInt flags_,sInt xs_,sInt ys_)
       }
     }
 
+    /*
     DXCompLib = LoadLibrary(L"D3DCompiler_42.dll");
     if(!DXCompLib)
       sFatal(L"could not load D3DCompiler_42.dll");
@@ -387,6 +396,9 @@ void InitGFX(sInt flags_,sInt xs_,sInt ys_)
     sVERIFY(DXCompLibCompile);
     DXCompLibDisassemble = (DXCompLibDisassembleType) GetProcAddress(DXCompLib,"D3DDisassemble");
     sVERIFY(DXCompLibDisassemble);
+    */
+    DXCompLibCompile = D3DCompile;
+    //DXCompLibDisassemble = D3DDisassemble;
 
     GeoBufferManager = new sGeoBufferManager;
     CBufferManager = new sCBufferManager;
@@ -3102,6 +3114,18 @@ void *sTexture2D::BeginLoadPalette()
 
 void sTexture2D::EndLoadPalette()
 {
+}
+
+void sTexture2D::UpdateFrom(sTexture2D* from)
+{
+  /*
+  // mipmaps?
+  D3D11_MAPPED_SUBRESOURCE subres;
+  GTC->DXCtx->Map(from->DXTex2D,0,D3D11_MAP_WRITE_DISCARD,0,&subres);
+  GTC->DXCtx->UpdateSubresource(DXTex2D,0,0,subres.pData,subres.RowPitch,subres.DepthPitch);
+  GTC->DXCtx->Unmap(from->DXTex2D,0);
+  */
+  GTC->DXCtx->CopyResource(DXTex2D, from->DXTex2D);
 }
 
 void sTexture2D::CalcOneMiplevel(const sRect &rect)

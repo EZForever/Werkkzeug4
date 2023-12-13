@@ -62,6 +62,12 @@
     <ClCompile Include="altona\base\input2.cpp">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="altona\base\graphics_blank.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="altona\base\graphics_dx11.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools\asc\main.hpp" />
@@ -108,6 +114,9 @@
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="altona\base\input2.hpp">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="altona\base\graphics_dx11_private.hpp">
       <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>

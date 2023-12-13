@@ -1620,7 +1620,9 @@ void sTexture2D::Init(sInt xs, sInt ys, sInt flags,sInt mipmaps, sBool force, vo
   SizeX = xs;
   SizeY = ys;
   SizeZ = 1;
+#if sRENDERER == sRENDER_DX9
   ShareHandle = shareHandle;
+#endif
   Flags = (flags&~sTEX_TYPE_MASK)|sTEX_2D;
   Mipmaps = realmip;
   Loading = -1;
