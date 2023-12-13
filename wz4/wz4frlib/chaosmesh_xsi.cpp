@@ -1333,7 +1333,7 @@ void XSILoader::_Mesh(sPoolString modelname,sInt jointid,sBool animated)
       cl->Material->AddRef();
 
     // hier sollte der code sein, der die texture spaces vermischt
-    // wir brauchen also auf alle fälle einen shader!
+    // wir brauchen also auf alle f\xE4lle einen shader!
 
     // prepare normals
 
