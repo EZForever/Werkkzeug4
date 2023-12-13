@@ -42,4 +42,5 @@
 #define sCONFIG_BUILD_DEBUG
 #else
 #define sCONFIG_BUILD_RELEASE
+#define sCONFIG_BUILD_STRIPPED
 #endif
