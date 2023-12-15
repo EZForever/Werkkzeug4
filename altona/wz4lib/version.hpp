@@ -9,6 +9,7 @@
 
 #define WZ4_VERSION 0
 #define WZ4_REVISION 211
+#define WZ4_FORK L"ezf0"
 
 /****************************************************************************/
 

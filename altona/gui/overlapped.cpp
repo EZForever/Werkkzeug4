@@ -77,14 +77,14 @@ static void MoveWindow(sWindow *parent,const sRect &old,sInt dx,sInt dy,sInt mas
   else if(mask & 1) 
   {
     outer->x0 = old.x0 + dx;
-    if(outer->x0 > outer->x1-20)
-      outer->x0 = outer->x1-20;
+    if(outer->x0 > outer->x1-sDpiScale(20))
+      outer->x0 = outer->x1-sDpiScale(20);
   }
   else if(mask & 4) 
   {
     outer->x1 = old.x1 + dx;
-    if(outer->x1 < outer->x0+20)
-      outer->x1 = outer->x0+20;
+    if(outer->x1 < outer->x0+sDpiScale(20))
+      outer->x1 = outer->x0+sDpiScale(20);
   }
 
   if((mask&10)==10)
@@ -95,14 +95,14 @@ static void MoveWindow(sWindow *parent,const sRect &old,sInt dx,sInt dy,sInt mas
   else if(mask & 2) 
   {
     outer->y0 = old.y0 + dy;
-    if(outer->y0 > outer->y1-20)
-      outer->y0 = outer->y1-20;
+    if(outer->y0 > outer->y1-sDpiScale(20))
+      outer->y0 = outer->y1-sDpiScale(20);
   }
   else if(mask & 8) 
   {
     outer->y1 = old.y1 + dy;
-    if(outer->y1 < outer->y0+20)
-      outer->y1 = outer->y0+20;
+    if(outer->y1 < outer->y0+sDpiScale(20))
+      outer->y1 = outer->y0+sDpiScale(20);
   }
 
 
@@ -116,21 +116,23 @@ static void MoveWindow(sWindow *parent,const sRect &old,sInt dx,sInt dy,sInt mas
 
 void sSizeBorder::OnCalcSize()
 {
-  ReqSizeX = 8;
-  ReqSizeY = 8;
+  ReqSizeX = sDpiScale(8);
+  ReqSizeY = sDpiScale(8);
 }
 
 void sSizeBorder::OnLayout()
 {
-  Parent->Inner.Extend(-4);
+  Parent->Inner.Extend(-sDpiScale(8)/2);
 }
 
 void sSizeBorder::OnPaint2D()
 {
-  sRect r(Client);
+  sRect r = Client;
   sGui->RectHL(r,sGC_HIGH,sGC_LOW); r.Extend(-1);
-  sGui->RectHL(r,sGC_BACK,sGC_BACK); r.Extend(-1);
-  sGui->RectHL(r,sGC_BACK,sGC_BACK); r.Extend(-1);
+  for (sInt i = 2; i < sDpiScale(8) / 2; i++)
+  {
+    sGui->RectHL(r,sGC_BACK,sGC_BACK); r.Extend(-1);
+  }
   sGui->RectHL(r,sGC_LOW,sGC_HIGH); r.Extend(-1);
 }
 
@@ -138,7 +140,7 @@ void sSizeBorder::OnDrag(const sWindowDrag &dd)
 {
   sVERIFY(Parent);
 
-  const sInt b=15;
+  const sInt b= sDpiScale(15);
   sInt mask = 0;
   if(dd.MouseX<Client.x0+b) mask |= 1;
   if(dd.MouseY<Client.y0+b) mask |= 2;
@@ -184,15 +186,15 @@ sTitleBorder::sTitleBorder(const sChar *title, sMessage closemsg)
 
 void sTitleBorder::OnCalcSize()
 {
-  ReqSizeY = 15;
+  ReqSizeY = sDpiScale(15);
 }
 
 void sTitleBorder::OnLayout()
 {
   sInt y0 = Client.y0;
-  sInt y1 = Client.y0+15;
+  sInt y1 = Client.y0+sDpiScale(15);
   Parent->Inner.y0 = Client.y1 = y1;
-  y1--;
+  y1 -= sDpiScale(1);
 
   sInt x=Client.x1;
 
@@ -214,14 +216,14 @@ void sTitleBorder::OnLayout()
 void sTitleBorder::OnPaint2D()
 {
   sRect r(Client);
-  r.y1 = r.y0+14;
+  r.y1 = r.y0+sDpiScale(14);
   if (Childs.GetCount())
     r.x1=Childs[Childs.GetCount()-1]->Outer.x0;
 
   sGui->PropFont->SetColor(sGC_TEXT,sGC_BUTTON);
   sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_SPACE,r,Title);
   r.y0 = r.y1;
-  r.y1 = r.y0+1;
+  r.y1 = r.y0+sDpiScale(1);
   r.x1=Client.x1;
   sRect2D(r,sGC_DRAW);
 }

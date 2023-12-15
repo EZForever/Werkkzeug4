@@ -554,8 +554,13 @@ void __debugbreak();
 
 #if sCONFIG_SYSTEM_WINDOWS
 #define D3D_DEBUG_INFO 1
+#if sCONFIG_DPIAWARE
+#define WINVER 0x0603           // dpi related apis require windows 8.1+
+#define _WIN32_WINNT 0x0603
+#else
 #define WINVER 0x0501           // require windows xp!
 #define _WIN32_WINNT 0x0501
+#endif
 #define DIRECTINPUT_VERSION 0x0800
 #undef UNICODE
 #undef _UNICODE

@@ -282,15 +282,15 @@ void sWindow::ScrollTo(const sRect &r,sBool save)
   vis.y1 -= Client.y0;
   if(save)
   {
-    if(Client.SizeX()>75)
+    if(Client.SizeX()>sDpiScale(75))
     {
-      vis.x0-=25;
-      vis.x1+=25;
+      vis.x0-=sDpiScale(25);
+      vis.x1+=sDpiScale(25);
     }
-    if(Client.SizeY()>75)
+    if(Client.SizeY()>sDpiScale(75))
     {
-      vis.y0-=25;
-      vis.y1+=25;
+      vis.y0-=sDpiScale(25);
+      vis.y1+=sDpiScale(25);
     }
   }
   if(vis.x0<0)

@@ -225,10 +225,10 @@ class sListWindow2Field_Progress : public sListWindow2Field
     sRect rc = client;
     sRect2D(client,lw->BackColor);
 
-    rc.Extend(-2);
+    rc.Extend(sDpiScale(-2));
     sRectFrame2D(rc,sGC_TEXT);
     
-    rc.Extend(-1);
+    rc.Extend(sDpiScale(-1));
     rc.x1 = rc.x0 + sInt(Ref.Ref<sF32>(obj) * (rc.x1 - rc.x0));
     sRect2D(rc,sGC_BLUE);
   }
@@ -314,7 +314,7 @@ void sStaticListWindow::OnCalcSize()
   sInt max = Columns.GetCount();
   IndentPixels = sGui->PropFont->GetWidth(L"nn");
 
-  Height = sGui->PropFont->GetHeight()+2;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(2);
   if(max>0)
     ReqSizeX = Columns[max-1].Pos;
   else
@@ -357,7 +357,7 @@ void sStaticListWindow::OnPaint2D()
   sInt indent;
   sListWindowTreeInfo<sObject *> *ti;
 
-  Height = sGui->PropFont->GetHeight()+2;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(2);
   r.y0 = Client.y0;
   ys = 0;
   
@@ -413,10 +413,10 @@ void sStaticListWindow::OnPaint2D()
           if(_i+1==Columns.GetCount()) 
             r.x1 = Client.x1;
           else
-            r.x1 = Client.x0+column->Pos-1;
+            r.x1 = Client.x0+column->Pos-sDpiScale(1);
           if(!OnPaintField(r,column->Field,obj,line,select))
             PaintField(r,column->Field,obj,line,select);
-          r.x0 = r.x1+1;
+          r.x0 = r.x1+sDpiScale(1);
         }
       }
       r.y0 = r.y1;
@@ -430,7 +430,7 @@ void sStaticListWindow::OnPaint2D()
     if(_i+1!=Columns.GetCount())
     {
       sInt x = Client.x0 + column->Pos;
-      sRect2D(x-1,Client.y0,x,Client.y1,(DragHighlight==_i)?sGC_SELECT:sGC_DRAW);
+      sRect2D(x-sDpiScale(1),Client.y0,x,Client.y1,(DragHighlight==_i)?sGC_SELECT:sGC_DRAW);
     }
   }
 
@@ -511,7 +511,7 @@ void sStaticListWindow::ScrollTo(sInt index)
   sListWindow2Column *column;
   sListWindowTreeInfo<sObject *> *ti;
 
-  Height = sGui->PropFont->GetHeight()+2;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(2);
   r.y0 = Client.y0;
   ys = 0;
   
@@ -954,7 +954,7 @@ sBool sStaticListWindow::Hit(sInt mx,sInt my,sInt &line,sInt &col,sRect &rect)
 
   if(!Array) return 0;
 
-  Height = sGui->PropFont->GetHeight()+2;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(2);
   r.y0 = Client.y0;
   sFORALL(*Array,obj)
   {
@@ -1017,7 +1017,7 @@ sBool sStaticListWindow::MakeRect(sInt line,sInt col,sRect &rect)
 
   if(!Array) return 0;
 
-  Height = sGui->PropFont->GetHeight()+2;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(2);
   r.y0 = Client.y0;
   sFORALL(*Array,obj)
   {
@@ -1692,7 +1692,7 @@ void sListWindow2Header::Tag()
 
 void sListWindow2Header::OnCalcSize()
 {
-  Height = sGui->PropFont->GetHeight()+3;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(3);
   ReqSizeY = Height;
 }
 
@@ -1712,7 +1712,7 @@ void sListWindow2Header::OnPaint2D()
   sClipRect(Parent->Outer);
 
   r = Client;
-  r.y1--;
+  r.y1 -= sDpiScale(1);
   sGui->PropFont->SetColor(sGC_TEXT,sGC_BUTTON);
 
   x = Client.x0 - Parent->ScrollX;
@@ -1723,9 +1723,9 @@ void sListWindow2Header::OnPaint2D()
 
     if(_i+1!=ListWindow->Columns.GetCount())
     {
-      r.x1--;
+      r.x1 -= sDpiScale(1);
       if(r.x1<Client.x1)
-        sRect2D(x-1,Client.y0,x,Client.y1,(DragMode==_i)?sGC_SELECT:sGC_TEXT);
+        sRect2D(x-sDpiScale(1),Client.y0,x,Client.y1,(DragMode==_i)?sGC_SELECT:sGC_TEXT);
     }
     else
     {
@@ -1740,7 +1740,7 @@ void sListWindow2Header::OnPaint2D()
       sRect a = r;
       a.x0 = r.x1 = r.x1-r.SizeY();
       lc->SortBox = a;
-      sRect2D(a.x0,a.y0,a.x0+1,a.y1,sGC_TEXT);
+      sRect2D(a.x0,a.y0,a.x0+sDpiScale(1),a.y1,sGC_TEXT);
       a.x0++;
       if(lc->Field->SortOrder>0)
       {
@@ -1768,7 +1768,7 @@ void sListWindow2Header::OnPaint2D()
     if(r.SizeX()>0)
       sGui->PropFont->Print(sF2P_OPAQUE|sF2P_SPACE|sF2P_LEFT,r,lc->Field->Label);
   }
-  sRect2D(Client.x0,Client.y0+Height-1,Client.x1,Client.y0+Height,sGC_TEXT);
+  sRect2D(Client.x0,Client.y0+Height-sDpiScale(1),Client.x1,Client.y0+Height,sGC_TEXT);
 
   sClipPop();
 }
@@ -1787,7 +1787,7 @@ void sListWindow2Header::OnDrag(const sWindowDrag &dd)
     for(sInt i=0;i<ListWindow->Columns.GetCount()-1;i++)
     {
       lc = &ListWindow->Columns[i];
-      if(dd.MouseX > lc->Pos+x0-2 && dd.MouseX < lc->Pos+x0+2)
+      if(dd.MouseX > lc->Pos+x0-sDpiScale(2) && dd.MouseX < lc->Pos+x0+sDpiScale(2))
       {
         MousePointer = sMP_SIZEWE;
         break;
@@ -1799,7 +1799,7 @@ void sListWindow2Header::OnDrag(const sWindowDrag &dd)
     for(sInt i=0;i<ListWindow->Columns.GetCount();i++)
     {
       lc = &ListWindow->Columns[i];
-      if(dd.MouseX > lc->Pos+x0-2 && dd.MouseX < lc->Pos+x0+2 && i<ListWindow->Columns.GetCount()-1)
+      if(dd.MouseX > lc->Pos+x0-sDpiScale(2) && dd.MouseX < lc->Pos+x0+sDpiScale(2) && i<ListWindow->Columns.GetCount()-1)
       {
         DragMode = i;
         DragStart = lc->Pos-dd.MouseX;
@@ -1844,22 +1844,22 @@ void sListWindow2Header::OnDrag(const sWindowDrag &dd)
       lc = &ListWindow->Columns[DragMode];
       sInt oldp = lc->Pos;
       sInt newp = DragStart + dd.MouseX;
-      newp = sClamp<sInt>(newp,2,Client.SizeX()-2+Parent->ScrollX);
+      newp = sClamp<sInt>(newp,sDpiScale(2),Client.SizeX()-sDpiScale(2)+Parent->ScrollX);
       if(oldp!=newp)
       {
         if(!DragAbsolute)       // drag keeping width
         {
           if(DragMode>0)
-            newp = sMax(newp,ListWindow->Columns[DragMode-1].Pos+2);
+            newp = sMax(newp,ListWindow->Columns[DragMode-1].Pos+sDpiScale(2));
           for(sInt i=DragMode;i<ListWindow->Columns.GetCount();i++)
             ListWindow->Columns[i].Pos += (newp-oldp);
         }
         else                    // drag only width
         {
           if(DragMode>0)
-            newp = sMax(newp,ListWindow->Columns[DragMode-1].Pos+2);
-          if(DragMode<ListWindow->Columns.GetCount()-2)
-            newp = sMin(newp,ListWindow->Columns[DragMode+1].Pos-2);
+            newp = sMax(newp,ListWindow->Columns[DragMode-1].Pos+sDpiScale(2));
+          if(DragMode<ListWindow->Columns.GetCount()-sDpiScale(2))
+            newp = sMin(newp,ListWindow->Columns[DragMode+1].Pos-sDpiScale(2));
           lc->Pos = newp;
         }
         sGui->Update(Parent->Outer);

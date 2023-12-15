@@ -13,7 +13,7 @@
 
 sTabBorderBase::sTabBorderBase()
 {
-  Height = sGui->PropFont->GetHeight()+6;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(6);
   Flags |= sWF_HOVER;
   HoverTab = -1;
   HoverKill = -1;
@@ -52,8 +52,8 @@ void sTabBorderBase::OnPaint2D()
   sFont2D *font = sGui->PropFont;
   font->SetColor(sGC_TEXT,sGC_BACK);
   sInt max = GetTabCount();
-  sInt space = (font->GetWidth(L" ")/2+1)*2;
-  sInt kill = (Height/4)*2+1;
+  sInt space = (font->GetWidth(L" ")/2+sDpiScale(1))*2;
+  sInt kill = (Height/4)*2+sDpiScale(1);
   if(max==1)
     kill = -2*space;
   Rects.Resize(max);
@@ -68,7 +68,7 @@ void sTabBorderBase::OnPaint2D()
     const sChar *text = GetTabName(i);
     sInt xw = font->GetWidth(text);
 
-    Rects[i].Client.Init(Rect.x0+xs,Rect.y0+2,Rect.x0+xs+space*4+xw+kill,Rect.y1-1);
+    Rects[i].Client.Init(Rect.x0+xs,Rect.y0+sDpiScale(2),Rect.x0+xs+space*4+xw+kill,Rect.y1-sDpiScale(1));
     xs+= space*4 + xw + kill;
     sRect r=Rects[i].Client;
     r.x0++;
@@ -113,7 +113,7 @@ void sTabBorderBase::OnPaint2D()
     }
   }
 
-  sRect2D(Rect.x0,Rect.y1-1,Rect.x1,Rect.y1,sGC_DRAW);
+  sRect2D(Rect.x0,Rect.y1-sDpiScale(1),Rect.x1,Rect.y1,sGC_DRAW);
   sClipPush();
 
   if(ScrollWidth)
@@ -122,11 +122,11 @@ void sTabBorderBase::OnPaint2D()
     
     r = Rect;
     r.x1 = r.x0+arrow;
-    r.y1--;
+    r.y1 -= sDpiScale(1);
     font->Print(sF2P_OPAQUE|sF2P_LEFT,r,L" \x25c4 ");
     r = Rect;
     r.x0 = r.x1-arrow;
-    r.y1--;
+    r.y1-= sDpiScale(1);
     font->Print(sF2P_OPAQUE|sF2P_RIGHT,r,L" \x25ba ");
 
     r = Rect;
@@ -153,24 +153,24 @@ void sTabBorderBase::OnPaint2D()
     const sChar *text = GetTabName(i);
     sRect r = Rects[i].Client;
 
-    sRect2D(r.x0,r.y0,r.x1,r.y0+1,(ActiveTab==i)?sGC_HIGH:sGC_LOW);
-    sRect2D(r.x0,r.y0+1,r.x0+1,r.y1,(ActiveTab==i)?sGC_HIGH2:sGC_LOW2);
-    sRect2D(r.x1-1,r.y0+1,r.x1,r.y1,(ActiveTab==i)?sGC_LOW:sGC_HIGH);
-    r.x0++;
-    r.x1--;
-    r.y0++;
+    sRect2D(r.x0             ,r.y0             ,r.x1             ,r.y0+sDpiScale(1),(ActiveTab==i)?sGC_HIGH:sGC_LOW);
+    sRect2D(r.x0             ,r.y0+sDpiScale(1),r.x0+sDpiScale(1),r.y1             ,(ActiveTab==i)?sGC_HIGH2:sGC_LOW2);
+    sRect2D(r.x1-sDpiScale(1),r.y0+sDpiScale(1),r.x1             ,r.y1             ,(ActiveTab==i)?sGC_LOW:sGC_HIGH);
+    r.x0 += sDpiScale(1);
+    r.x1 -= sDpiScale(1);
+    r.y0 -= sDpiScale(1);
 
     if(max>1)
     {
       sRect rr = Rects[i].Kill;
       sRectFrame2D(rr,sGC_DRAW);
-      rr.Extend(-1);
+      rr.Extend(sDpiScale(-1));
       sRect2D(rr,(ActiveTab==i)?sGC_BUTTON:sGC_BACK);
       sInt x = rr.CenterX();
       sInt y = rr.CenterY();
-      sInt h = kill/2-3;
-      sLine2D(x-h,y-h,x+h+1,y+h+1,(HoverKill==i)?sGC_HIGH:sGC_DRAW);
-      sLine2D(x-h,y+h,x+h+1,y-h-1,(HoverKill==i)?sGC_HIGH:sGC_DRAW);
+      sInt h = kill/2-sDpiScale(3);
+      sLine2D(x-h,y-h,x+h+sDpiScale(1),y+h+sDpiScale(1),(HoverKill==i)?sGC_HIGH:sGC_DRAW);
+      sLine2D(x-h,y+h,x+h+sDpiScale(1),y-h-sDpiScale(1),(HoverKill==i)?sGC_HIGH:sGC_DRAW);
       sClipExclude(Rects[i].Kill);
     }
 
@@ -183,7 +183,7 @@ void sTabBorderBase::OnPaint2D()
 
   sRect r;
   r = Rect;
-  r.y1--;
+  r.y1 -= sDpiScale(1);
   sRect2D(r,sGC_BACK);
 
   sClipPop();
@@ -194,10 +194,10 @@ void sTabBorderBase::OnPaint2D()
       x = Rects[MoveBefore-1].Client.x1+space/2;
     else 
       x = Rects[MoveBefore].Client.x0-space/2;
-    sInt h=5;
-    sInt y = Rect.y1-1;
+    sInt h = sDpiScale(5);
+    sInt y = Rect.y1-sDpiScale(1);
     for(sInt i=0;i<h;i++)
-      sLine2D(x-i,y-h+i,x+i+1,y-h+i,sGC_DRAW);
+      sLine2D(x-i,y-h+i,x+i+sDpiScale(1),y-h+i,sGC_DRAW);
   }
   sClipPop();
   font->SetColor(sGC_TEXT,sGC_BACK);

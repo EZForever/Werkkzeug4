@@ -13,4 +13,7 @@
   <ItemGroup>
     <ClInclude Include="wz4\werkkzeug4\main.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="wz4\werkkzeug4\werkkzeug4.manifest" />
+  </ItemGroup>
 </Project>

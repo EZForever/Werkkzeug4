@@ -24,7 +24,7 @@ sSplitFrame::sSplitFrame()
   OldT = 0;
   RelT = 0;
 
-  Knop = 6;
+  Knop = sDpiScale(6); // this will not last a dpi change
   Proportional = 0;
 }
 
@@ -236,9 +236,9 @@ void sHSplitFrame::OnPaint2D()
   {
     sBool press = (i==Drag);
     sInt y = Client.y0 + ChildData[i].Pos - Knop;
-    sRect2D(Client.x0,y       ,Client.x1,y+1     ,press?sGC_LOW:sGC_HIGH);
-    sRect2D(Client.x0,y+1     ,Client.x1,y+Knop-1,sGC_BUTTON);
-    sRect2D(Client.x0,y+Knop-1,Client.x1,y+Knop  ,press?sGC_HIGH:sGC_LOW);
+    sRect2D(Client.x0,y                  ,Client.x1,y+sDpiScale(1)     ,press?sGC_LOW:sGC_HIGH);
+    sRect2D(Client.x0,y+sDpiScale(1)     ,Client.x1,y+Knop-sDpiScale(1),sGC_BUTTON);
+    sRect2D(Client.x0,y+Knop-sDpiScale(1),Client.x1,y+Knop             ,press?sGC_HIGH:sGC_LOW);
   }
 }
 
@@ -296,9 +296,9 @@ void sVSplitFrame::OnPaint2D()
   {
     sBool press = (i==Drag);
     sInt p = Client.x0 + ChildData[i].Pos - Knop;
-    sRect2D(p       ,Client.y0,p+1     ,Client.y1,press?sGC_LOW:sGC_HIGH);
-    sRect2D(p+1     ,Client.y0,p+Knop-1,Client.y1,sGC_BUTTON);
-    sRect2D(p+Knop-1,Client.y0,p+Knop  ,Client.y1,press?sGC_HIGH:sGC_LOW);
+    sRect2D(p                  ,Client.y0,p+sDpiScale(1)     ,Client.y1,press?sGC_LOW:sGC_HIGH);
+    sRect2D(p+sDpiScale(1)     ,Client.y0,p+Knop-sDpiScale(1),Client.y1,sGC_BUTTON);
+    sRect2D(p+Knop-sDpiScale(1),Client.y0,p+Knop             ,Client.y1,press?sGC_HIGH:sGC_LOW);
   }
 }
 
@@ -374,7 +374,7 @@ void sMenuFrame::OnCalcSize()
   {
     if(ColumnWidth[i]>0)
     {
-      ReqSizeX += ColumnWidth[i]+1;
+      ReqSizeX += ColumnWidth[i]+sDpiScale(1);
       ReqSizeY = sMax(ReqSizeY,ColumnHeight[i]);
     }
   }
@@ -394,7 +394,7 @@ void sMenuFrame::OnLayout()
   for(sInt i=0;i<MaxColumn;i++)
   {
     if(ColumnWidth[i]>0)
-      x += ColumnWidth[i]+1;
+      x += ColumnWidth[i]+sDpiScale(1);
     pos[i+1] = x;
     y[i] = 0;
   }
@@ -405,7 +405,7 @@ void sMenuFrame::OnLayout()
     c = item->Column;
 
     w->Outer.x0 = Client.x0+pos[c];
-    w->Outer.x1 = Client.x0+pos[c+1]-1;
+    w->Outer.x1 = Client.x0+pos[c+1]-sDpiScale(1);
     w->Outer.y0 = Client.y0+y[c]; y[c]+=w->DecoratedSizeY;
     w->Outer.y1 = Client.y0+y[c]; 
   }
@@ -493,9 +493,9 @@ void sMenuFrame::OnPaint2D()
       x1 = x;
       if(Client.y0+ColumnHeight[i]<Client.y1)
         sRect2D(x0,Client.y0+ColumnHeight[i],x1,Client.y1,sGC_BACK);
-      x++;
+      x += sDpiScale(1);
       if(x<Client.x1)
-        sRect2D(x-1,Client.y0,x,Client.y1,sGC_DRAW);
+        sRect2D(x-sDpiScale(1),Client.y0,x,Client.y1,sGC_DRAW);
     }
   }
 }
@@ -573,12 +573,12 @@ public:
   void OnCalcSize()
   {
     ReqSizeX = 0;
-    ReqSizeY = 12;
+    ReqSizeY = sDpiScale(12);
   }
   void OnPaint2D()
   {
     sRect2D(Client,sGC_BACK);
-    sGui->RectHL(sRect(Client.x0+5,Client.y0+5,Client.x1-5,Client.y0+7),sTRUE);
+    sGui->RectHL(sRect(Client.x0+sDpiScale(5),Client.y0+sDpiScale(5),Client.x1-sDpiScale(5),Client.y0+sDpiScale(7)),sTRUE);
   }
 };
 
@@ -604,16 +604,16 @@ public:
   void OnCalcSize()
   {
     ReqSizeX = sGui->PropFont->GetWidth(Name)+sGui->PropFont->GetWidth(L"  ");
-    ReqSizeY = sGui->PropFont->GetHeight()+1;
+    ReqSizeY = sGui->PropFont->GetHeight()+sDpiScale(1);
   }
   void OnPaint2D()
   {
     sRect r;
     r = Client;
-    r.y1--;
+    r.y1 -= sDpiScale(1);
     sGui->PropFont->SetColor(sGC_TEXT,sGC_BUTTON);
     sGui->PropFont->Print(sF2P_OPAQUE,r,Name);
-    sRect2D(Client.x0,Client.y1-1,Client.x1,Client.y1,sGC_DRAW);
+    sRect2D(Client.x0,Client.y1-sDpiScale(1),Client.x1,Client.y1,sGC_DRAW);
   }
 };
 
@@ -903,7 +903,7 @@ void sSwitchFrame::Switch(sInt screen)
 sGridFrame::sGridFrame()
 {
   Columns = 12;
-  Height = sGui->PropFont->GetHeight()+4;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(4);
 
   Flags |= sWF_OVERLAPPEDCHILDS;
 }
@@ -1000,17 +1000,17 @@ void sGridFrame::OnPaint2D()
           sInt hh = h;
           if(lay->Flags & sGFLF_NARROWGROUP) { hh = 1; h/=2; }
 
-          rr.Init(r.x0+h,r.CenterY(),r.CenterX()-w/2-hh,r.CenterY()+2);
+          rr.Init(r.x0+h,r.CenterY(),r.CenterX()-w/2-hh,r.CenterY()+sDpiScale(2));
           if(rr.SizeX()>0)
             sGui->RectHL(rr,sTRUE);
-          rr.Init(r.CenterX()+w/2+hh,r.CenterY(),r.x1-h,r.CenterY()+2);
+          rr.Init(r.CenterX()+w/2+hh,r.CenterY(),r.x1-h,r.CenterY()+sDpiScale(2));
           if(rr.SizeX()>0)
             sGui->RectHL(rr,sTRUE);
         }
         else
         {
           sRect2D(r,sGC_BACK);
-          sGui->RectHL(sRect(r.x0+h,r.CenterY(),r.x1-h,r.CenterY()+2),sTRUE);
+          sGui->RectHL(sRect(r.x0+h,r.CenterY(),r.x1-h,r.CenterY()+sDpiScale(2)),sTRUE);
         }
       }
       else if(lay->Flags & sGFLF_LEAD)
@@ -1018,7 +1018,7 @@ void sGridFrame::OnPaint2D()
         sInt h = r.SizeY()/2;
         sRect2D(r,sGC_BACK);
         sInt y = r.CenterY();
-        sRect2D(r.x0+h,y,r.x1-h,y+1,sGC_BUTTON);
+        sRect2D(r.x0+h,y,r.x1-h,y+sDpiScale(1),sGC_BUTTON);
       }
       else
       {
@@ -1106,10 +1106,10 @@ sBool sGridFrame::OnKey(sU32 key)
 sGridFrameHelper::sGridFrameHelper(sGridFrame *grid)
 {
   Grid = grid;
-  LabelWidth = 3;
-  ControlWidth = 2;
-  WideWidth = Grid->Columns-3-LabelWidth;
-  BoxWidth = 1;
+  LabelWidth = sDpiScale(3);
+  ControlWidth = sDpiScale(2);
+  WideWidth = Grid->Columns-sDpiScale(3)-LabelWidth;
+  BoxWidth = sDpiScale(1);
   Reset();
   TieMode = 0;
   TiePrev = 0;

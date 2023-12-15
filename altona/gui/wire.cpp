@@ -390,8 +390,8 @@ void sLayoutFrameSize::OnCalcSize()
 
   if(!ReqSizeX || !ReqSizeY)
   {
-    ReqSizeX = 400;
-    ReqSizeY = 200;
+    ReqSizeX = sDpiScale(400);
+    ReqSizeY = sDpiScale(200);
   }
 }
 
@@ -412,10 +412,10 @@ sWireMasterWindow::sWireMasterWindow()
   AddChild(LayoutFrame);
   popupFrame->AddBorder(new sSizeBorder);
   popupFrame->AddBorder(new sTitleBorder(L"popup",sMessage(this,&sWireMasterWindow::CmdClosePopup)));
-  popupFrame->ReqSizeX = 400;
-  popupFrame->ReqSizeY = 200;
-  popupFrame->MaxSizeY = 300;
-  popupFrame->MinSizeY = 300;
+  popupFrame->ReqSizeX = sDpiScale(400);
+  popupFrame->ReqSizeY = sDpiScale(200);
+  popupFrame->MaxSizeY = sDpiScale(300);
+  popupFrame->MinSizeY = sDpiScale(300);
   Flags |= sWF_ZORDER_BACK;
   DragModeFocus = 0;
   MainWindow = 0;
@@ -1013,9 +1013,9 @@ sBool sWireMasterWindow::HandleKey(sWindow *win,sU32 key)
       if(ws->Flags & sWF_SCROLLY)
       {
         if(mkey==sKEY_WHEELUP)
-          ws->ScrollTo(ws->ScrollX,ws->ScrollY-14*3);
+          ws->ScrollTo(ws->ScrollX,ws->ScrollY-sDpiScale(14)*3);
         else
-          ws->ScrollTo(ws->ScrollX,ws->ScrollY+14*3);
+          ws->ScrollTo(ws->ScrollX,ws->ScrollY+sDpiScale(14)*3);
         return 1;
       }
       ws = ws->Parent;

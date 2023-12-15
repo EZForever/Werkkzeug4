@@ -15,18 +15,23 @@
 
 void sFocusBorder::OnCalcSize()
 {
-  ReqSizeX = 2;
-  ReqSizeY = 2;
+  ReqSizeX = sDpiScale(2);
+  ReqSizeY = sDpiScale(2);
 }
 
 void sFocusBorder::OnLayout()
 {
-  Parent->Inner.Extend(-1);
+  Parent->Inner.Extend(-sDpiScale(2)/2);
 }
 
 void sFocusBorder::OnPaint2D()
 {
-  sGui->RectHL(Client,Parent->Flags & sWF_CHILDFOCUS);
+  sRect r = Client;
+  for (sInt i = 0; i < sDpiScale(2) / 2; i++)
+  {
+    sGui->RectHL(r,Parent->Flags & sWF_CHILDFOCUS);
+    r.Extend(-1);
+  }
 }
 
 /****************************************************************************/
@@ -42,13 +47,13 @@ sThickBorder::sThickBorder()
 
 void sThickBorder::OnCalcSize()
 {
-  ReqSizeX = 4;
-  ReqSizeY = 4;
+  ReqSizeX = sDpiScale(4);
+  ReqSizeY = sDpiScale(4);
 }
 
 void sThickBorder::OnLayout()
 {
-  Parent->Inner.Extend(-2);
+  Parent->Inner.Extend(-sDpiScale(4)/2);
 }
 
 void sThickBorder::OnPaint2D()
@@ -59,11 +64,14 @@ void sThickBorder::OnPaint2D()
     sGui->RectHL(r,sGC_LOW2,sGC_HIGH2);
   else
     sGui->RectHL(r,sGC_HIGH2,sGC_LOW2);
-  r.Extend(-1);
-  if (Inverted)
-    sGui->RectHL(r,sGC_LOW,sGC_HIGH);
-  else
-    sGui->RectHL(r,sGC_HIGH,sGC_LOW);
+  for (sInt i = 1; i < sDpiScale(4) / 2; i++)
+  {
+    r.Extend(-1);
+    if (Inverted)
+      sGui->RectHL(r,sGC_LOW,sGC_HIGH);
+    else
+      sGui->RectHL(r,sGC_HIGH,sGC_LOW);
+  }
 }
 
 /****************************************************************************/
@@ -74,20 +82,23 @@ void sThickBorder::OnPaint2D()
 
 void sThinBorder::OnCalcSize()
 {
-  ReqSizeX = 2;
-  ReqSizeY = 2;
+  ReqSizeX = sDpiScale(2);
+  ReqSizeY = sDpiScale(2);
 }
 
 void sThinBorder::OnLayout()
 {
-  Parent->Inner.Extend(-1);
+  Parent->Inner.Extend(-sDpiScale(2)/2);
 }
 
 void sThinBorder::OnPaint2D()
 {
-  sRect r;
-  r = Client;
-  sGui->RectHL(r,sGC_DRAW,sGC_DRAW);
+  sRect r = Client;
+  for (sInt i = 0; i < sDpiScale(2) / 2; i++)
+  {
+    sGui->RectHL(r,sGC_DRAW,sGC_DRAW);
+    r.Extend(-1);
+  }
 }
 
 /****************************************************************************/
@@ -103,24 +114,24 @@ sSpaceBorder::sSpaceBorder(sInt pen)
 
 void sSpaceBorder::OnCalcSize()
 {
-  ReqSizeX = 6;
-  ReqSizeY = 6;
+  ReqSizeX = sDpiScale(6);
+  ReqSizeY = sDpiScale(6);
 }
 
 void sSpaceBorder::OnLayout()
 {
-  Parent->Inner.Extend(-3);
+  Parent->Inner.Extend(-sDpiScale(6)/2);
 }
 
 void sSpaceBorder::OnPaint2D()
 {
-  sRect r;
-  r = Client;
+  sRect r = Client;
   sGui->RectHL(r,sGC_DRAW,sGC_DRAW);
-  r.Extend(-1);
-  sGui->RectHL(r,Pen,Pen);
-  r.Extend(-1);
-  sGui->RectHL(r,Pen,Pen);
+  for (sInt i = 1; i < sDpiScale(6) / 2; i++)
+  {
+    r.Extend(-1);
+    sGui->RectHL(r,Pen,Pen);
+  }
 }
 /****************************************************************************/
 /***                                                                      ***/
@@ -145,7 +156,7 @@ void sToolBorder::OnCalcSize()
   {
     ReqSizeY = sMax(ReqSizeY,w->ReqSizeY);
   }
-  ReqSizeY++;
+  ReqSizeY += sDpiScale(1);
 }
 
 void sToolBorder::OnLayout()
@@ -154,17 +165,17 @@ void sToolBorder::OnLayout()
 
   if(Bottom)
   {
-    y0 = Client.y1-ReqSizeY+1;
+    y0 = Client.y1-ReqSizeY+sDpiScale(1);
     y1 = Client.y1;
     Parent->Inner.y1 = Client.y0 = y0;
-    y0++;
+    y0 += sDpiScale(1);
   }
   else
   {
     y0 = Client.y0;
-    y1 = Client.y0+ReqSizeY-1;
+    y1 = Client.y0+ReqSizeY-sDpiScale(1);
     Parent->Inner.y0 = Client.y1 = y1;
-    y1--;
+    y1 -= sDpiScale(1);
   }
 
   OnLayout(y0,y1);
@@ -214,9 +225,9 @@ void sToolBorder::OnPaint2D()
 
   r = Client;
   if(Bottom)
-    r.y1 = r.y0+1;
+    r.y1 = r.y0+sDpiScale(1);
   else
-    r.y0 = r.y1-1;
+    r.y0 = r.y1-sDpiScale(1);
   sRect2D(r,sGC_DRAW);
 }
 
@@ -246,8 +257,8 @@ void sToolBorder::AddRightAligned(sWindow *w)
 
 sScrollBorder::sScrollBorder()
 {
-  Width = 10;
-  KnopMin = 20;
+  Width = sDpiScale(10);
+  KnopMin = sDpiScale(20);
 
   DragStartX = 0;
   DragStartY = 0;
@@ -293,7 +304,7 @@ void sScrollBorder::OnLayout()
 
       w->Outer.x0 = x;
       w->Outer.y0 = ButtonX.y0;
-      if(x+w->ReqSizeX < ButtonX.x1-4)
+      if(x+w->ReqSizeX < ButtonX.x1-sDpiScale(4))
         x += w->ReqSizeX;
       w->Outer.x1 = x;
       w->Outer.y1 = ButtonX.y1;
@@ -335,10 +346,10 @@ void sScrollBorder::OnPaint2D()
   {
     r = ButtonX;
     sInt color=(DragMode&1)?sGC_LOW2:sGC_LOW;
-    if(r.SizeX()>4)
+    if(r.SizeX()>sDpiScale(4))
     {
       sGui->RectHL(r);
-      r.Extend(-1);
+      r.Extend(sDpiScale(-1));
 
       if(CalcKnop(a,b,Parent->Client.SizeX(),Parent->Inner.SizeX(),r.SizeX(),Parent->ScrollX))
       {
@@ -348,7 +359,7 @@ void sScrollBorder::OnPaint2D()
         r.x1 = r.x0+b;
         r.x0 = r.x0+a;
         sGui->RectHL(r,DragMode & 1);
-        r.Extend(-1);
+        r.Extend(sDpiScale(-1));
         sRect2D(r,color);
       }
       else
@@ -366,10 +377,10 @@ void sScrollBorder::OnPaint2D()
   {
     r = ButtonY;
     sInt color=(DragMode&2)?sGC_LOW2:sGC_LOW;
-    if(r.SizeY()>4)
+    if(r.SizeY()>sDpiScale(4))
     {
       sGui->RectHL(r);
-      r.Extend(-1);
+      r.Extend(sDpiScale(-1));
 
       if(CalcKnop(a,b,Parent->Client.SizeY(),Parent->Inner.SizeY(),r.SizeY(),Parent->ScrollY))
       {
@@ -379,7 +390,7 @@ void sScrollBorder::OnPaint2D()
         r.y1 = r.y0+b;
         r.y0 = r.y0+a;
         sGui->RectHL(r,DragMode & 2);
-        r.Extend(-1);
+        r.Extend(sDpiScale(-1));
         sRect2D(r,color);
       }
       else
@@ -412,7 +423,7 @@ void sScrollBorder::OnDrag(const sWindowDrag &dd)
     {
       sInt client = Parent->Client.SizeX();
       sInt inner = Parent->Inner.SizeX();
-      sInt button = ButtonX.SizeX()-2;
+      sInt button = ButtonX.SizeX()-sDpiScale(2);
       CalcKnop(a,b,client,inner,button,Parent->ScrollX);
       if(dd.MouseX<Client.x0+a)
         Parent->ScrollX -= inner;
@@ -426,7 +437,7 @@ void sScrollBorder::OnDrag(const sWindowDrag &dd)
     {
       sInt client = Parent->Client.SizeY();
       sInt inner = Parent->Inner.SizeY();
-      sInt button = ButtonY.SizeY()-2;
+      sInt button = ButtonY.SizeY()-sDpiScale(2);
       CalcKnop(a,b,client,inner,button,Parent->ScrollY);
       if(dd.MouseY<Client.y0+a)
         Parent->ScrollY -= inner;
@@ -447,7 +458,7 @@ void sScrollBorder::OnDrag(const sWindowDrag &dd)
     {
       sInt client = Parent->Client.SizeX();
       sInt inner = Parent->Inner.SizeX();
-      sInt button = ButtonX.SizeX()-2;
+      sInt button = ButtonX.SizeX()-sDpiScale(2);
       if(button>2 && client>inner)
       {
         CalcKnop(a,b,client,inner,button,Parent->ScrollX);
@@ -459,7 +470,7 @@ void sScrollBorder::OnDrag(const sWindowDrag &dd)
     {
       sInt client = Parent->Client.SizeY();
       sInt inner = Parent->Inner.SizeY();
-      sInt button = ButtonY.SizeY()-2;
+      sInt button = ButtonY.SizeY()-sDpiScale(2);
 
       if(button>2 && client>inner)
       {
@@ -503,7 +514,7 @@ sStatusBorderItem::sStatusBorderItem() : Buffer(0,0)
 
 sStatusBorder::sStatusBorder()
 {
-  Height = sGui->PropFont->GetHeight()+6;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(6);
 }
 
 sStatusBorder::~sStatusBorder()
@@ -598,7 +609,7 @@ void sStatusBorder::OnLayout()
 
   sFORALL(Items,item)
   {
-    item->Client.y0 = Client.y0+2;
+    item->Client.y0 = Client.y0+sDpiScale(2);
     item->Client.y1 = Client.y1;
   }
 }
@@ -607,7 +618,7 @@ void sStatusBorder::OnPaint2D()
 {
   sStatusBorderItem *item;
 
-  sRect2D(Client.x0,Client.y0,Client.x1,Client.y0+2,sGC_BACK);
+  sRect2D(Client.x0,Client.y0,Client.x1,Client.y0+sDpiScale(2),sGC_BACK);
   sFORALL(Items,item)
   {
     sRect r = item->Client;
@@ -619,8 +630,8 @@ void sStatusBorder::OnPaint2D()
       gc = sGC_MAX;
     }
 
-    sGui->RectHL(r,sGC_BACK,sGC_BACK); r.Extend(-1);
-    sGui->RectHL(r,sGC_LOW,sGC_HIGH); r.Extend(-1);
+    sGui->RectHL(r,sGC_BACK,sGC_BACK); r.Extend(sDpiScale(-1));
+    sGui->RectHL(r,sGC_LOW,sGC_HIGH); r.Extend(sDpiScale(-1));
     sGui->PropFont->SetColor(sGC_TEXT,gc);
     sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_SPACE,r,item->Buffer.Buffer);
   }

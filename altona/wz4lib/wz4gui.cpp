@@ -421,7 +421,7 @@ void MainWindow::UpdateStatus()
     Status->PrintF(STATUS_FILENAME,L"%s",Doc->Filename);
 
   sString<sMAXPATH> name;
-  name.PrintF(L"werkkzeug4 V%d.%d",WZ4_VERSION,WZ4_REVISION);
+  name.PrintF(L"werkkzeug4 v%d.%d/%s",WZ4_VERSION,WZ4_REVISION,WZ4_FORK);
   if(sRENDERER==sRENDER_DX9)
     name.Add(L" (DX9)");
   if(sRENDERER==sRENDER_DX11)
@@ -436,6 +436,8 @@ void MainWindow::UpdateStatus()
     name.Add(L" (debugfast)");
   else if(!sCONFIG_BUILD_RELEASE)
     name.Add(L" (unknown debug)");
+  if(sCONFIG_DPIAWARE)
+    name.PrintAddF(L" (UI %d%%)",sDpiScale(100));
   if(!Doc->Filename.IsEmpty())
     name.PrintAddF(L" - %s",Doc->Filename);
   if(name != sGetWindowName())
@@ -4198,8 +4200,8 @@ void WinStack::CursorStatus()
 
 WinStack::WinStack()
 {
-  OpXS = 24;
-  OpYS = 16;
+  OpXS = sDpiScale(24);
+  OpYS = sDpiScale(16);
   CursorX = 0;
   CursorY = 0;
   Page = 0;
@@ -4372,8 +4374,8 @@ void WinStack::OnPaint2D()
         {
           ro.x0 = r.x0 + op->PosX*3;
           ro.y0 = r.y0 + op->PosY*3;
-          ro.x1 = ro.x0 + op->SizeX*3-1;
-          ro.y1 = ro.y0 + op->SizeY*3-1;
+          ro.x1 = ro.x0 + op->SizeX*3-sDpiScale(1);
+          ro.y1 = ro.y0 + op->SizeY*3-sDpiScale(1);
 
           sSetColor2D(0,op->Class->OutputType->Color);
           sRect2D(ro,0);
@@ -4393,7 +4395,7 @@ void WinStack::OnPaint2D()
     sRectFrame2D(ro,sGC_DRAW);
     BirdsInner = ro;
 
-    r.Extend(1);
+    r.Extend(sDpiScale(1));
     sRectFrame2D(r,sGC_DRAW);
 
     sClipExclude(r);
@@ -4411,15 +4413,15 @@ void WinStack::OnPaint2D()
     if(warning)
     {
       sRect r;
-      r.x0 = Inner.CenterX()-125;
-      r.y0 = Inner.CenterY()-25;
-      r.x1 = r.x0+250;
-      r.y1 = r.y0+50;
+      r.x0 = Inner.CenterX()-sDpiScale(125);
+      r.y0 = Inner.CenterY()-sDpiScale(25);
+      r.x1 = r.x0+sDpiScale(250);
+      r.y1 = r.y0+sDpiScale(50);
       sRectFrame2D(r,sGC_DRAW);
-      r.Extend(-1);
+      r.Extend(sDpiScale(-1));
       sGui->PropFont->SetColor(sGC_TEXT,sGC_DOC);
       sGui->PropFont->Print(sF2P_OPAQUE,r,warning);
-      r.Extend(1);
+      r.Extend(sDpiScale(1));
       sClipExclude(r);
     }
   }
@@ -4444,7 +4446,7 @@ void WinStack::OnPaint2D()
         sString<512> text;
         sInt xs;
 
-        if(namew+4>r.SizeX())
+        if(namew+sDpiScale(4)>r.SizeX())
         {
           text.PrintF(L"%s\n%s",name,desc);
           xs = sMax(namew,descw);
@@ -4455,27 +4457,27 @@ void WinStack::OnPaint2D()
           text = desc;
           xs = descw;
           r.y0 = r.y1;
-          r.y1 = r.y0 + sGui->PropFont->GetHeight() + 4;
+          r.y1 = r.y0 + sGui->PropFont->GetHeight() + sDpiScale(4);
         }
         
-        r.x1 = r.x0+xs+8;
-        r.Extend(-2);
+        r.x1 = r.x0+xs+sDpiScale(8);
+        r.Extend(sDpiScale(-2));
         sGui->PropFont->SetColor(sGC_TEXT,sGC_SELECT);
         sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_SPACE|sF2P_MULTILINE,r,text);
-        r.Extend(1);
+        r.Extend(sDpiScale(1));
         sRectFrame2D(r,sGC_DRAW);
         sClipExclude(r);
       }
       else
       {
         sInt xs = sGui->PropFont->GetWidth(name);
-        if(xs+4>r.SizeX())
+        if(xs+sDpiScale(4)>r.SizeX())
         {
-          r.x1 = r.x0+xs+8;
-          r.Extend(-2);
+          r.x1 = r.x0+xs+sDpiScale(8);
+          r.Extend(sDpiScale(-2));
           sGui->PropFont->SetColor(sGC_TEXT,sGC_SELECT);
           sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_SPACE,r,name);
-          r.Extend(1);
+          r.Extend(sDpiScale(1));
           sRectFrame2D(r,sGC_DRAW);
           sClipExclude(r);
         }
@@ -4585,12 +4587,12 @@ void WinStack::OnPaint2D()
 
 
         sSetColor2D(0,l1);
-        sRect2D(r.x0,r.y0,r.x1,r.y0+1,0);
-        sRect2D(r.x0,r.y0+1,r.x0+1,r.y1-1,0);
+        sRect2D(r.x0             ,r.y0             ,r.x1             ,r.y0+sDpiScale(1),0);
+        sRect2D(r.x0             ,r.y0+sDpiScale(1),r.x0+sDpiScale(1),r.y1-sDpiScale(1),0);
         sSetColor2D(0,h1);
-        sRect2D(r.x0,r.y1-1,r.x1,r.y1,0);
-        sRect2D(r.x1-1,r.y0+1,r.x1,r.y1-1,0);
-        r.Extend(-1);
+        sRect2D(r.x0             ,r.y1-sDpiScale(1),r.x1             ,r.y1             ,0);
+        sRect2D(r.x1-sDpiScale(1),r.y0+sDpiScale(1),r.x1             ,r.y1-sDpiScale(1),0);
+        r.Extend(sDpiScale(-1));
 
         sSetColor2D(0,color);
         sGui->PropFont->SetColor(textcolor,0);
@@ -4598,15 +4600,15 @@ void WinStack::OnPaint2D()
 
         name = MakeOpName(op);
         sInt xs = sGui->PropFont->GetWidth(name);
-        sInt namepf = (xs+4>r.SizeX()) ? sF2P_LEFT|sF2P_SPACE : 0;
+        sInt namepf = (xs+sDpiScale(4)>r.SizeX()) ? sF2P_LEFT|sF2P_SPACE : 0;
 
         if(op->Hide)
         {
           sRect2D(r,0);
-          sLine2D(r.x0,r.y0+0,r.x1-1,r.y1-2,sGC_RED);
-          sLine2D(r.x0,r.y0+1,r.x1-1,r.y1-1,sGC_RED);
-          sLine2D(r.x0,r.y1-2,r.x1-1,r.y0+0,sGC_RED);
-          sLine2D(r.x0,r.y1-1,r.x1-1,r.y0+1,sGC_RED);
+          sLine2D(r.x0,r.y0+sDpiScale(0),r.x1-sDpiScale(1),r.y1-sDpiScale(2),sGC_RED);
+          sLine2D(r.x0,r.y0+sDpiScale(1),r.x1-sDpiScale(1),r.y1-sDpiScale(1),sGC_RED);
+          sLine2D(r.x0,r.y1-sDpiScale(2),r.x1-sDpiScale(1),r.y0+sDpiScale(0),sGC_RED);
+          sLine2D(r.x0,r.y1-sDpiScale(1),r.x1-sDpiScale(1),r.y0+sDpiScale(1),sGC_RED);
           sGui->PropFont->Print(namepf,r,name);
         }
         else
@@ -4623,68 +4625,68 @@ void WinStack::OnPaint2D()
 
         if(App->IsShown(op))
         {
-          sInt y = r.y0+2;
-          sRect2D(r.x0+4,y,r.x0+8,y+2,sGC_GREEN);
+          sInt y = r.y0+sDpiScale(2);
+          sRect2D(r.x0+sDpiScale(4),y,r.x0+sDpiScale(8),y+sDpiScale(2),sGC_GREEN);
         }
         if(App->IsEdited(op))
         {
-          sInt y = (r.y0+r.y1)/2-1;
-          sRect2D(r.x0+4,y,r.x0+8,y+2,sGC_RED);
+          sInt y = (r.y0+r.y1)/2-sDpiScale(1);
+          sRect2D(r.x0+sDpiScale(4),y,r.x0+sDpiScale(8),y+sDpiScale(2),sGC_RED);
         }
         if(op->Cache)
         {
-          sInt y = r.y1-2-2;
-          sRect2D(r.x0+4,y,r.x0+8,y+2,sGC_BLUE);
+          sInt y = r.y1-sDpiScale(2+2);
+          sRect2D(r.x0+sDpiScale(4),y,r.x0+sDpiScale(8),y+sDpiScale(2),sGC_BLUE);
         }
 
 
-        if((op->Class->Flags & wCF_LOAD) && !op->Hide)
+        if ((op->Class->Flags & wCF_LOAD) && !op->Hide)
         {
-          sRect2D(rr.x0,rr.y0  ,rr.x0+4,rr.y0+2,sGC_BUTTON);
-          sRect2D(rr.x0,rr.y0+2,rr.x0+2,rr.y0+4,sGC_BUTTON);
-          sSetColor2D(0,l1);
-          sLine2D(rr.x0+1,rr.y0+4,rr.x0+5,rr.y0  ,0);
-          sLine2D(rr.x0,rr.y0+4,rr.x0+4,rr.y0  ,l0);
+          sRect2D(rr.x0, rr.y0, rr.x0 + sDpiScale(4), rr.y0 + sDpiScale(2), sGC_BUTTON);
+          sRect2D(rr.x0, rr.y0 + sDpiScale(2), rr.x0 + sDpiScale(2), rr.y0 + sDpiScale(4), sGC_BUTTON);
+          sSetColor2D(0, l1);
+          sLine2D(rr.x0 + sDpiScale(1), rr.y0 + sDpiScale(4), rr.x0 + sDpiScale(5), rr.y0, 0);
+          sLine2D(rr.x0, rr.y0 + sDpiScale(4), rr.x0 + sDpiScale(4), rr.y0, l0);
 
-          sRect2D(rr.x1-4,rr.y0  ,rr.x1,rr.y0+2,sGC_BUTTON);
-          sRect2D(rr.x1-2,rr.y0+2,rr.x1,rr.y0+4,sGC_BUTTON);
-          sSetColor2D(0,h1);
-          sLine2D(rr.x1-5,rr.y0  ,rr.x1-1,rr.y0+4,0);
-          sLine2D(rr.x1-4,rr.y0  ,rr.x1,rr.y0+4,h0);
+          sRect2D(rr.x1 - sDpiScale(4), rr.y0, rr.x1, rr.y0 + sDpiScale(2), sGC_BUTTON);
+          sRect2D(rr.x1 - sDpiScale(2), rr.y0 + sDpiScale(2), rr.x1, rr.y0 + sDpiScale(4), sGC_BUTTON);
+          sSetColor2D(0, h1);
+          sLine2D(rr.x1 - sDpiScale(5), rr.y0, rr.x1 - sDpiScale(1), rr.y0 + sDpiScale(4), 0);
+          sLine2D(rr.x1 - sDpiScale(4), rr.y0, rr.x1, rr.y0 + sDpiScale(4), h0);
         }
 
-        if((op->Class->Flags & wCF_STORE) && !op->Hide)
+        if ((op->Class->Flags & wCF_STORE) && !op->Hide)
         {
-          sRect2D(rr.x0  ,rr.y1-2,rr.x0+4,rr.y1  ,sGC_BUTTON);
-          sRect2D(rr.x0  ,rr.y1-4,rr.x0+2,rr.y1-2,sGC_BUTTON);
-          sSetColor2D(0,l1);
-          sLine2D(rr.x0+1,rr.y1-5,rr.x0+4,rr.y1-2,0);
-          sLine2D(rr.x0  ,rr.y1-5,rr.x0+4,rr.y1-1,l0);
+          sRect2D(rr.x0, rr.y1 - sDpiScale(2), rr.x0 + sDpiScale(4), rr.y1, sGC_BUTTON);
+          sRect2D(rr.x0, rr.y1 - sDpiScale(4), rr.x0 + sDpiScale(2), rr.y1 - sDpiScale(2), sGC_BUTTON);
+          sSetColor2D(0, l1);
+          sLine2D(rr.x0 + sDpiScale(1), rr.y1 - sDpiScale(5), rr.x0 + sDpiScale(4), rr.y1 - sDpiScale(2), 0);
+          sLine2D(rr.x0, rr.y1 - sDpiScale(5), rr.x0 + sDpiScale(4), rr.y1 - sDpiScale(1), l0);
 
-          sRect2D(rr.x1-4,rr.y1-2,rr.x1  ,rr.y1  ,sGC_BUTTON);
-          sRect2D(rr.x1-2,rr.y1-4,rr.x1  ,rr.y1-2,sGC_BUTTON);
-          sSetColor2D(0,h1);
-          sLine2D(rr.x1-5,rr.y1-2,rr.x1-1,rr.y1-6,0);
-          sLine2D(rr.x1-5,rr.y1-1,rr.x1-1,rr.y1-5,h0);
+          sRect2D(rr.x1 - sDpiScale(4), rr.y1 - sDpiScale(2), rr.x1, rr.y1, sGC_BUTTON);
+          sRect2D(rr.x1 - sDpiScale(2), rr.y1 - sDpiScale(4), rr.x1, rr.y1 - sDpiScale(2), sGC_BUTTON);
+          sSetColor2D(0, h1);
+          sLine2D(rr.x1 - sDpiScale(5), rr.y1 - sDpiScale(2), rr.x1 - sDpiScale(1), rr.y1 - sDpiScale(6), 0);
+          sLine2D(rr.x1 - sDpiScale(5), rr.y1 - sDpiScale(1), rr.x1 - sDpiScale(1), rr.y1 - sDpiScale(5), h0);
         }
 
-        if((op->Class->Flags & wCF_CALL) && !op->Hide)
+        if ((op->Class->Flags & wCF_CALL) && !op->Hide)
         {
-          sInt y= rr.CenterY();
-          sRect2D(rr.x0  ,y-3,rr.x0+3,y+4  ,sGC_BUTTON);
-          sSetColor2D(0,h1);
-          sLine2D(rr.x0+1,y-4,rr.x0+5,y+0,0);
-          sLine2D(rr.x0  ,y-4,rr.x0+5,y+1,h0);
-          sSetColor2D(0,l1);
-          sLine2D(rr.x0+2,y+3,rr.x0+5,y-0,0);
-          sLine2D(rr.x0+1,y+3,rr.x0+5,y-1,l0);
-          
+          sInt y = rr.CenterY();
+          sRect2D(rr.x0, y - sDpiScale(3), rr.x0 + sDpiScale(3), y + sDpiScale(4), sGC_BUTTON);
+          sSetColor2D(0, h1);
+          sLine2D(rr.x0 + sDpiScale(1), y - sDpiScale(4), rr.x0 + sDpiScale(5), y + sDpiScale(0), 0);
+          sLine2D(rr.x0, y - sDpiScale(4), rr.x0 + sDpiScale(5), y + sDpiScale(1), h0);
+          sSetColor2D(0, l1);
+          sLine2D(rr.x0 + sDpiScale(2), y + sDpiScale(3), rr.x0 + sDpiScale(5), y - sDpiScale(0), 0);
+          sLine2D(rr.x0 + sDpiScale(1), y + sDpiScale(3), rr.x0 + sDpiScale(5), y - sDpiScale(1), l0);
+
         }
 
-        if(op->Bypass)
+        if (op->Bypass)
         {
           sInt x = rr.CenterX();
-          sRect2D(x-1,rr.y0,x+1,rr.y1,sGC_RED);
+          sRect2D(x - sDpiScale(1), rr.y0, x + sDpiScale(1), rr.y1, sGC_RED);
         }
 
         sClipExclude(rr);
@@ -4699,7 +4701,7 @@ void WinStack::OnPaint2D()
       {
         static sU32 colors[8] = { 0xffffff,0xff0000,0xffff00,0x00ff00,0x00ffff,0x0000ff,0xff00ff,0x000000 };
         MakeRect(r,op);
-        r.Extend(4);
+        r.Extend(sDpiScale(4));
         sRect rr(r);
 
         sU32 l0,l1,h0,h1;
@@ -4722,15 +4724,15 @@ void WinStack::OnPaint2D()
         h1=sColorFade(color,sGetColor2D(h0),0.5f);
 
         sGui->RectHL(r,l0,h0); 
-        r.Extend(-1);
+        r.Extend(sDpiScale(-1));
 
         sSetColor2D(0,l1);
-        sRect2D(r.x0,r.y0,r.x1,r.y0+1,0);
-        sRect2D(r.x0,r.y0+1,r.x0+1,r.y1-1,0);
+        sRect2D(r.x0,r.y0,r.x1,r.y0+sDpiScale(1),0);
+        sRect2D(r.x0,r.y0+sDpiScale(1),r.x0+sDpiScale(1),r.y1-sDpiScale(1),0);
         sSetColor2D(0,h1);
-        sRect2D(r.x0,r.y1-1,r.x1,r.y1,0);
-        sRect2D(r.x1-1,r.y0+1,r.x1,r.y1-1,0);
-        r.Extend(-1);
+        sRect2D(r.x0,r.y1-sDpiScale(1),r.x1,r.y1,0);
+        sRect2D(r.x1-sDpiScale(1),r.y0+sDpiScale(1),r.x1,r.y1-sDpiScale(1),0);
+        r.Extend(sDpiScale(-1));
 
         sSetColor2D(0,color);
         sGui->PropFont->SetColor(sGC_BLACK,0);
@@ -4738,7 +4740,7 @@ void WinStack::OnPaint2D()
         const sChar *text = L"";
         if(op->EditStringCount>0 && op->EditString[0])
           text = op->EditString[0]->Get();
-        sGui->PropFont->Print(sF2P_OPAQUE|sF2P_MULTILINE,r,text,-1,3);
+        sGui->PropFont->Print(sF2P_OPAQUE|sF2P_MULTILINE,r,text,-1,sDpiScale(3));
 
         sClipExclude(rr);
       }
@@ -4783,8 +4785,8 @@ void WinStack::OnPaint2D()
           
           for(sInt i=0;i<5;i++)
           {
-            static const sInt jx[5] = { 0,-1,0,1,0 };
-            static const sInt jy[5] = { 0,0,-1,0,1 };
+            static const sInt jx[5] = { 0,sDpiScale(-1),0,sDpiScale(1),0 };
+            static const sInt jy[5] = { 0,0,sDpiScale(-1),0,sDpiScale(1) };
             sInt x = jx[i];
             sInt y = jy[i];
 
@@ -4814,7 +4816,7 @@ void WinStack::OnPaint2D()
         for(sInt i=0;i<DragMoveMode;i++)
         {
           sRectFrame2D(r,sGC_DRAW);
-          r.Extend(-1);
+          r.Extend(sDpiScale(-1));
         }
       }
     }
@@ -4902,7 +4904,7 @@ void WinStack::OnDrag(const sWindowDrag &dd)
   switch(dd.Mode)
   {
   case sDD_START:
-    CursorX = (dd.StartX - Client.x0) / OpXS - 1;
+    CursorX = (dd.StartX - Client.x0) / OpXS - sDpiScale(1);
     CursorY = (dd.StartY - Client.y0) / OpYS;
     CursorStatus();
     break;

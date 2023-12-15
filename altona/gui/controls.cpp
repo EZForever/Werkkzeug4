@@ -195,8 +195,8 @@ void sButtonControl::OnCalcSize()
 
   if(Style&sBCS_NOBORDER)
   {
-    ReqSizeX += 2;
-    ReqSizeY += 2;
+    ReqSizeX += sDpiScale(2);
+    ReqSizeY += sDpiScale(2);
 
     if(Shortcut)
     {
@@ -210,8 +210,8 @@ void sButtonControl::OnCalcSize()
   }
   else
   {
-    ReqSizeX += 4;
-    ReqSizeY += 4;
+    ReqSizeX += sDpiScale(2);
+    ReqSizeY += sDpiScale(2);
   }
 
   if(Width!=0)
@@ -242,7 +242,7 @@ void sButtonControl::OnPaint2D()
     {
       sRect r2 = r;
       sRect r3;
-      sInt w = 5;
+      sInt w = sDpiScale(5);
       r.x0 = r2.x1 = r2.x0+r2.SizeY();
       r3.x0 = r2.CenterX()-w;
       r3.x1 = r3.x0 + w*2;
@@ -263,7 +263,7 @@ void sButtonControl::OnPaint2D()
       if(select)
       {      
         sRect r4=r3;
-        r4.Extend(-2);
+        r4.Extend(sDpiScale(-2));
         sRect2D(r4,sGC_DRAW);
         sClipExclude(r4);
       }
@@ -301,7 +301,7 @@ void sButtonControl::OnPaint2D()
     if(Flags & sWF_CHILDFOCUS)
     {
       sRect r(Client);
-      r.Extend(-3);
+      r.Extend(sDpiScale(-3));
       sRectFrame2D(r,sGC_DOC);
     }
   }
@@ -902,12 +902,12 @@ void sStringControl::OnPaint2D()
 
   r = Inner;
   sGui->RectHL(r,sTRUE);
-  r.Extend(-1);
+  r.Extend(sDpiScale(-1));
   sClipPush();
   sClipRect(r);
 
   r = Client;
-  r.Extend(-1);
+  r.Extend(sDpiScale(-1));
   if(Style&sSCS_BACKCOLOR)
   {
     sSetColor2D(0,BackColor);
@@ -1151,7 +1151,7 @@ sBool sStringControl::OnKey(sU32 key)
       text = L"";
     sRect r;
     r = Client;
-    r.Extend(-1);
+    r.Extend(sDpiScale(-1));
     PrintInfo.QueryPos = text + PrintInfo.CursorPos;
     PrintInfo.Mode = sPIM_POS2POINT;
     sGui->PropFont->Print(sF2P_SPACE|sF2P_LEFT|sF2P_OPAQUE,r,text,-1,0,0,0,&PrintInfo);
@@ -1818,7 +1818,7 @@ void sProgressBarControl::SetPercentage(sF32 percentage)
 
 void sProgressBarControl::OnCalcSize()
 {
-  ReqSizeY = sGui->PropFont->GetHeight()+4;
+  ReqSizeY = sGui->PropFont->GetHeight()+sDpiScale(4);
 }
 
 void sProgressBarControl::OnPaint2D()
@@ -1852,13 +1852,13 @@ void sBitmaskControl::Init(sU8 *val)
 
 void sBitmaskControl::OnCalcSize()
 {
-  ReqSizeY = sGui->PropFont->GetHeight()+4;
+  ReqSizeY = sGui->PropFont->GetHeight()+sDpiScale(4);
 }
 
 void sBitmaskControl::OnLayout()
 {
   for(sInt i=0;i<=8;i++)
-    X[i] = Client.x0 + (Client.SizeX()-1)*i/8;
+    X[i] = Client.x0 + (Client.SizeX()-sDpiScale(1))*i/8;
 }
 
 void sBitmaskControl::OnPaint2D()
@@ -1866,13 +1866,13 @@ void sBitmaskControl::OnPaint2D()
   sRect2D(Client,sGC_RED);
   sRectFrame2D(Client,sGC_DRAW);
   for(sInt i=1;i<8;i++)
-    sRect2D(X[i],Client.y0+1,X[i]+1,Client.y1-1,sGC_DRAW);
+    sRect2D(X[i],Client.y0+sDpiScale(1), X[i] + sDpiScale(1), Client.y1 - sDpiScale(1), sGC_DRAW);
   for(sInt i=0;i<8;i++)
   {
     sInt col = sGC_DOC;
     if(Val && (*Val & (1<<i)))
       col = sGC_SELECT;
-    sRect2D(X[i]+1,Client.y0+1,X[i+1],Client.y1-1,col);
+    sRect2D(X[i]+sDpiScale(1),Client.y0+sDpiScale(1),X[i+1],Client.y1- sDpiScale(1),col);
   }
 }
 

@@ -169,14 +169,14 @@ void sGui_::SetTheme(const sGuiTheme &theme)
   sSetColor2D(sGC_PINK    ,0xff8080);
 
   if (PropFont)
-    PropFont->Init(theme.PropFont,14,0);
+    PropFont->Init(theme.PropFont,sDpiScale(14),0);
   else
-    PropFont = new sFont2D(theme.PropFont,14,0);
+    PropFont = new sFont2D(theme.PropFont,sDpiScale(14),0);
 
   if (FixedFont)
-    FixedFont->Init(theme.FixedFont,14,0);
+    FixedFont->Init(theme.FixedFont,sDpiScale(14),0);
   else
-    FixedFont = new sFont2D(theme.FixedFont,14,0);
+    FixedFont = new sFont2D(theme.FixedFont,sDpiScale(14),0);
 
   if (Root) Root->Update();
 }
@@ -209,8 +209,8 @@ void sGui_::CheckToolTip()
       lines++;
     }
 
-    tr.x1 = tr.x0+4+width;
-    tr.y1 = tr.y0+4+lines*sGui->PropFont->GetHeight();
+    tr.x1 = tr.x0+sDpiScale(4)+width;
+    tr.y1 = tr.y0+sDpiScale(4)+lines*sGui->PropFont->GetHeight();
   }
   if(tr!=ToolTipRect)
   {
@@ -500,9 +500,9 @@ void sGui_::OnPaint(const sRect &client,const sRect &update)
   {
     sRect r = ToolTipRect;
     sRectFrame2D(r,sGC_DRAW);
-    r.Extend(-1);
+    r.Extend(sDpiScale(-1));
     sGui->PropFont->SetColor(sGC_TEXT,sGC_SELECT);
-    sGui->PropFont->Print(sF2P_OPAQUE|sF2P_TOP|sF2P_LEFT|sF2P_MULTILINE,r,Hover->ToolTip,Hover->ToolTipLength,1,0,0,0);
+    sGui->PropFont->Print(sF2P_OPAQUE|sF2P_TOP|sF2P_LEFT|sF2P_MULTILINE,r,Hover->ToolTip,Hover->ToolTipLength,sDpiScale(1),0,0,0);
   }
 }
 
@@ -628,8 +628,8 @@ void sGui_::AddCenterWindow(sWindow *w)
 {
   CalcSize(w);
   PositionWindow(w,
-    sMax(25,Root->Client.CenterX()-w->DecoratedSizeX/2),
-    sMax(50,Root->Client.CenterY()-w->DecoratedSizeY/2));
+    sMax(sDpiScale(25),Root->Client.CenterX()-w->DecoratedSizeX/2),
+    sMax(sDpiScale(50),Root->Client.CenterY()-w->DecoratedSizeY/2));
   AddWindow(w);
   SetFocus(w);
 }
@@ -1090,10 +1090,10 @@ void sGui_::Notify(const void *ptr,sDInt n)
 
 void sGui_::RectHL(const sRect &r,sInt colh,sInt coll) const
 {
-  sRect2D(r.x0,r.y0,r.x1,r.y0+1,colh);
-  sRect2D(r.x0,r.y1-1,r.x1,r.y1,coll);
-  sRect2D(r.x0,r.y0+1,r.x0+1,r.y1-1,colh);
-  sRect2D(r.x1-1,r.y0+1,r.x1,r.y1-1,coll);
+  sRect2D(r.x0             ,r.y0             ,r.x1             ,r.y0+sDpiScale(1),colh);
+  sRect2D(r.x0             ,r.y1-sDpiScale(1),r.x1             ,r.y1             ,coll);
+  sRect2D(r.x0             ,r.y0+sDpiScale(1),r.x0+sDpiScale(1),r.y1-sDpiScale(1),colh);
+  sRect2D(r.x1-sDpiScale(1),r.y0+sDpiScale(1),r.x1             ,r.y1-sDpiScale(1),coll);
 }
 
 void sGui_::RectHL(const sRect &r, sBool invert) const
@@ -1106,16 +1106,16 @@ void sGui_::RectHL(const sRect &r, sBool invert) const
 
 void sGui_::PaintHandle(sInt x,sInt y,sBool select) const
 {
-  sRect r(x-3,y-3,x+4,y+4);
+  sRect r(x-sDpiScale(3),y-sDpiScale(3),x+sDpiScale(4),y+sDpiScale(4));
 
   RectHL(r,sGC_DRAW,sGC_DRAW);
-  r.Extend(-1);
+  r.Extend(sDpiScale(-1));
   sRect2D(r,select?sGC_SELECT:sGC_BACK);
 }
 
 sBool sGui_::HitHandle(sInt x,sInt y,sInt mx,sInt my) const
 {
-  sRect r(x-3,y-3,x+4,y+4);
+  sRect r(x-sDpiScale(3),y-sDpiScale(3),x+sDpiScale(4),y+sDpiScale(4));
   return r.Hit(mx,my);
 }
 
@@ -1124,16 +1124,16 @@ void sGui_::PaintButtonBorder(sRect &r,sBool pressed) const
   if(!pressed)
   {
     //sGui->RectHL(r,sGC_HIGH2,sGC_LOW2); 
-    //r.Extend(-1);
+    //r.Extend(sDpiScale(-1));
     sGui->RectHL(r,sGC_HIGH,sGC_LOW); 
-    r.Extend(-1);
+    r.Extend(sDpiScale(-1));
   }
   else
   {
     //sGui->RectHL(r,sGC_LOW2,sGC_HIGH2); 
-    //r.Extend(-1);
+    //r.Extend(sDpiScale(-1));
     sGui->RectHL(r,sGC_LOW,sGC_HIGH); 
-    r.Extend(-1);
+    r.Extend(sDpiScale(-1));
   }
 }
 

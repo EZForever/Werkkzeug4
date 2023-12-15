@@ -238,6 +238,19 @@ void sRender2DEnd();
 void sRender2DSet(sU32 *data);        // set pixels (data -> bitmap)
 void sRender2DGet(sU32 *data);        // get pixels (bitmap -> data)
 
+// dpi awareness
+
+#if sCONFIG_DPIAWARE
+
+extern sInt sDpiCurrent;
+
+sINLINE sInt sDpiScale(sInt metric) { return sMulDiv(metric, sDpiCurrent, 96); }
+
+#else
+
+sINLINE sInt sDpiScale(sInt metric) { return metric; }
+
+#endif
 
 /****************************************************************************/
 

@@ -356,7 +356,7 @@ void sColorPickerWindow::MakeGui()
 {
   sGridFrameHelper gh(Grid);
   Grid->Columns = 4;
-  gh.LabelWidth = 2;
+  gh.LabelWidth = sDpiScale(2);
   const sF32 step = 0.002f;
 
   if(Gradient)
@@ -641,8 +641,8 @@ void sColorPickerWindow::OnPaint2D()
   sInt cg = sClamp(sInt(Green*255),0,255);
   sInt cb = sClamp(sInt(Blue *255),0,255);
 
-  sRect2D(Client.x0,BarRect.y1,Client.x1,BarRect.y1+1,sGC_DRAW);
-  sRect2D(PickRect.x0-1,PickRect.y0,PickRect.x0,PickRect.y1,sGC_DRAW);
+  sRect2D(Client.x0,BarRect.y1,Client.x1,BarRect.y1+sDpiScale(1), sGC_DRAW);
+  sRect2D(PickRect.x0-sDpiScale(1),PickRect.y0,PickRect.x0,PickRect.y1,sGC_DRAW);
 
   if(!Gradient)
   {
@@ -650,13 +650,13 @@ void sColorPickerWindow::OnPaint2D()
     sRect2D(BarRect,0);
 
     sRect r(PaletteRect);
-    sInt h = 20;
-    sInt w = r.SizeX()+1;
+    sInt h = sDpiScale(20);
+    sInt w = r.SizeX()+sDpiScale(1);
     sRect2D(PaletteRect,sGC_RED);
     for(sInt i=0;i<4;i++)
-      sRect2D(r.x0,r.y0+i*h,r.x1,r.y0+i*h+1,sGC_DRAW);
+      sRect2D(r.x0,r.y0+i*h,r.x1,r.y0+i*h+sDpiScale(1),sGC_DRAW);
     for(sInt i=1;i<8;i++)
-      sRect2D(r.x0+w*i/8-1,r.y0,r.x0+w*i/8,r.y1,sGC_DRAW);
+      sRect2D(r.x0+w*i/8-sDpiScale(1),r.y0,r.x0+w*i/8,r.y1,sGC_DRAW);
 
     for(sInt y=0;y<4;y++)
     {
@@ -666,7 +666,7 @@ void sColorPickerWindow::OnPaint2D()
         sVector4 v(PaletteColors[i][0],PaletteColors[i][1],PaletteColors[i][2],0);
         sU32 col = v.GetColor();
         sSetColor2D(sGC_MAX,col);
-        PaletteBoxes[i].Init(r.x0+w*x/8,r.y0+1+y*h,r.x0+w*(x+1)/8-1,r.y0+(y+1)*h);
+        PaletteBoxes[i].Init(r.x0+w*x/8,r.y0+1+y*h,r.x0+w*(x+1)/8-sDpiScale(1),r.y0+(y+1)*h);
         sRect2D(PaletteBoxes[i],sGC_MAX);
       }
     }
@@ -676,14 +676,14 @@ void sColorPickerWindow::OnPaint2D()
     sRect r;
     sColorGradientKey *key;
 
-    sRect2D(Client.x0,WarpRect.y1,Client.x1,WarpRect.y1+1,sGC_DRAW);
+    sRect2D(Client.x0,WarpRect.y1,Client.x1,WarpRect.y1+sDpiScale(1),sGC_DRAW);
 
     r.Init(0,0,WarpImage->SizeX,1);
     sStretch2D(WarpImage->Data,WarpImage->SizeX,r,WarpRect);
     sStretch2D(GradientImage->Data,GradientImage->SizeX,r,BarRect);
 
     r = BarRect;
-    r.y0 = r.y1-6;
+    r.y0 = r.y1-sDpiScale(6);
     sRect2D(r,sGC_BACK);
 
     sClipPush();
@@ -694,10 +694,10 @@ void sColorPickerWindow::OnPaint2D()
       sInt y = r.y0;
       sInt col = (_i==DragKey) ? sGC_SELECT : sGC_DRAW;
 
-      sRect2D(x,BarRect.y0,x+1,y,col);
-      sLine2D(x  ,y  ,x-4,y+4,col);
-      sLine2D(x-4,y+4,x+4,y+4,col);
-      sLine2D(x+4,y+4,x  ,y  ,col);
+      sRect2D(x,BarRect.y0,x+sDpiScale(1),y,col);
+      sLine2D(x  ,y  ,x-sDpiScale(4),y+ sDpiScale(4),col);
+      sLine2D(x-sDpiScale(4),y+sDpiScale(4),x+sDpiScale(4),y+sDpiScale(4),col);
+      sLine2D(x+sDpiScale(4),y+sDpiScale(4),x  ,y  ,col);
     }
     sClipPop();
   }
@@ -706,7 +706,7 @@ void sColorPickerWindow::OnPaint2D()
 
   sInt x = sInt(Mod1(Hue/360)*PickRect.SizeX())+PickRect.x0;
   sInt y = sInt(Sat*PickRect.SizeY())+PickRect.y0;
-  sInt n = 3;
+  sInt n = sDpiScale(3);
   sInt color = Value>0.5 ? sGC_BLACK : sGC_WHITE;
 
   sClipPush();
@@ -723,40 +723,40 @@ void sColorPickerWindow::OnPaint2D()
 
 void sColorPickerWindow::OnCalcSize()
 {
-  ReqSizeX = 320;
-  ReqSizeY = Grid->DecoratedSizeY + 20;
+  ReqSizeX = sDpiScale(320);
+  ReqSizeY = Grid->DecoratedSizeY + sDpiScale(20);
   if(Gradient)
-    ReqSizeY += 20;
+    ReqSizeY += sDpiScale(20);
   else
-    ReqSizeY += 20*4;
+    ReqSizeY += sDpiScale(20)*4;
 }
 
 void sColorPickerWindow::OnLayout()
 {
-  sInt x = Client.x0+150;
-  sInt y = Client.y0+20;//sMax(Client.y0,Client.y1 - Grid->DecoratedSizeY);
+  sInt x = Client.x0+sDpiScale(150);
+  sInt y = Client.y0+sDpiScale(20);//sMax(Client.y0,Client.y1 - Grid->DecoratedSizeY);
   if(Gradient)
-    y += 20;
+    y += sDpiScale(20);
 
   PaletteRect = WarpRect = BarRect = Client;
   PickRect = Client;
   Grid->Outer = Client;
 
   Grid->Outer.y0 = y;
-  BarRect.y1 = y-1;
-  Grid->Outer.x1 = x-1;
+  BarRect.y1 = y-sDpiScale(1);
+  Grid->Outer.x1 = x-sDpiScale(1);
   PickRect.x0 = x;
   PickRect.y0 = y;
 
   if(Gradient)
   {
-    WarpRect.y1 = BarRect.y0 = BarRect.y0+14;
-    WarpRect.y1--;
+    WarpRect.y1 = BarRect.y0 = BarRect.y0+sDpiScale(14);
+    WarpRect.y1 -= sDpiScale(1);
     PaletteRect.y0 = PaletteRect.y1;
   }
   else
   {
-    PaletteRect.y0 = PaletteRect.y1-20*4;
+    PaletteRect.y0 = PaletteRect.y1-sDpiScale(20)*4;
     Grid->Outer.y1 = PaletteRect.y0;
     PickRect.y1 = PaletteRect.y0;
     PaletteRect.y0;

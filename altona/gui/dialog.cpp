@@ -90,12 +90,12 @@ void sDialogWindow::Start()
   if(LeftLabel)
   {
     LeftButton = AddButton(LeftLabel,sMessage(this,&sDialogWindow::CmdLeft));
-    LeftButton->Width = 75;
+    LeftButton->Width = sDpiScale(75);
   }
   if(RightLabel)
   {
     RightButton = AddButton(RightLabel,sMessage(this,&sDialogWindow::CmdRight));
-    RightButton->Width = 75;
+    RightButton->Width = sDpiScale(75);
   }
   if(EditString.Buffer)
   {
@@ -121,23 +121,23 @@ void sDialogWindow::OnLayout()
 {
   if(LeftButton)
   {
-    LeftButton->Outer.x0 = Client.x0+10;
-    LeftButton->Outer.y1 = Client.y1-10;
+    LeftButton->Outer.x0 = Client.x0+sDpiScale(10);
+    LeftButton->Outer.y1 = Client.y1-sDpiScale(10);
     LeftButton->Outer.x1 = LeftButton->Outer.x0 + LeftButton->DecoratedSizeX;
     LeftButton->Outer.y0 = LeftButton->Outer.y1 - LeftButton->DecoratedSizeY;
   }
   if(RightButton)
   {
-    RightButton->Outer.x1 = Client.x1-10;
-    RightButton->Outer.y1 = Client.y1-10;
+    RightButton->Outer.x1 = Client.x1-sDpiScale(10);
+    RightButton->Outer.y1 = Client.y1-sDpiScale(10);
     RightButton->Outer.x0 = RightButton->Outer.x1 - RightButton->DecoratedSizeX;
     RightButton->Outer.y0 = RightButton->Outer.y1 - RightButton->DecoratedSizeY;
   }
   if(EditControl)
   {
-    EditControl->Outer.x0 = Client.x0+10;
-    EditControl->Outer.x1 = Client.x1-10;
-    EditControl->Outer.y1 = Client.y1-30;
+    EditControl->Outer.x0 = Client.x0+sDpiScale(10);
+    EditControl->Outer.x1 = Client.x1-sDpiScale(10);
+    EditControl->Outer.y1 = Client.y1-sDpiScale(30);
     EditControl->Outer.y0 = EditControl->Outer.y1 - EditControl->DecoratedSizeY;
   }
 }
@@ -146,20 +146,20 @@ void sDialogWindow::OnCalcSize()
 {
   if(Text.GetCount()>100)
   {
-    ReqSizeX = 300;
-    ReqSizeY = 200;
+    ReqSizeX = sDpiScale(300);
+    ReqSizeY = sDpiScale(200);
   }
   else
   {
-    ReqSizeX = 200;
-    ReqSizeY = 100;
+    ReqSizeX = sDpiScale(200);
+    ReqSizeY = sDpiScale(100);
   }
 }
 
 void sDialogWindow::OnPaint2D()
 {
   sGui->PropFont->SetColor(sGC_TEXT,sGC_BACK);
-  sGui->PropFont->Print(sF2P_OPAQUE|sF2P_MULTILINE|sF2P_TOP|sF2P_LEFT,Client,Text.Get(),-1,5);
+  sGui->PropFont->Print(sF2P_OPAQUE|sF2P_MULTILINE|sF2P_TOP|sF2P_LEFT,Client,Text.Get(),-1,sDpiScale(5));
 }
 
 sBool sDialogWindow::OnShortcut(sU32 key)
@@ -303,18 +303,18 @@ void sMultipleChoiceDialog::OnPaint2D()
   t = b = Client;
   t.x1 = b.x0 = Client.x0 + Client.SizeX()*2/3;
 
-  t.Extend(-4);
+  t.Extend(sDpiScale(-4));
   font->SetColor(sGC_TEXT,sGC_BACK);
   font->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_TOP|sF2P_MULTILINE,t,Text);
   sClipExclude(t);
 
-  b.Extend(-4);
+  b.Extend(sDpiScale(-4));
   h = font->GetHeight()*2;
   sFORALL(Items,item)
   {
     r = b;
     r.y0 = b.y0 + (_i+0)*h;
-    r.y1 = b.y0 + (_i+1)*h-4;
+    r.y1 = b.y0 + (_i+1)*h-sDpiScale(4);
 
     item->Rect = r;
 
@@ -408,14 +408,14 @@ void sMultipleChoiceDialog::AddItem(const sChar *text,const sMessage &cmd,sU32 s
 void sMultipleChoiceDialog::Start()
 {
   Flags |= sWF_AUTOKILL;
-  ReqSizeX = 400;
-  ReqSizeY = (Items.GetCount())*sGui->PropFont->GetHeight()*2+4;
+  ReqSizeX = sDpiScale(400);
+  ReqSizeY = (Items.GetCount())*sGui->PropFont->GetHeight()*2+sDpiScale(4);
 
   sRect r;
   sPrintInfo pi;
   pi.Mode = sPIM_GETHEIGHT;
-  r.Init(0,0,ReqSizeX*2/3-8,1000);
-  sInt h = sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_TOP|sF2P_MULTILINE,r,Text,-1,0,0,0,&pi)+8;
+  r.Init(0,0,ReqSizeX*2/3-sDpiScale(8),sDpiScale(1000));
+  sInt h = sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_TOP|sF2P_MULTILINE,r,Text,-1,0,0,0,&pi)+sDpiScale(8);
   ReqSizeY = sMax(ReqSizeY,h);
 
   AddBorder(new sThickBorder());
@@ -464,11 +464,11 @@ sProgressDialog *sProgressDialog::Instance = 0;
 sProgressDialog::sProgressDialog(const sChar *title,const sChar *text)
 {
   sInt ReqSizeX = 400;
-  sInt ReqSizeY = sGui->PropFont->GetHeight()*5/2 + 8 + 15 + 4;
+  sInt ReqSizeY = sGui->PropFont->GetHeight()*5/2 + sDpiScale(8 + 15 + 4);
 
   sInt sx,sy;
   sGetScreenSize(sx,sy);
-  WindowRect.Init((sx - ReqSizeX)/2,(sy - ReqSizeY) / 2,(sx + ReqSizeX + 1)/2,(sy + ReqSizeY + 1)/2);
+  WindowRect.Init((sx - ReqSizeX)/2,(sy - ReqSizeY) / 2,(sx + ReqSizeX + sDpiScale(1))/2,(sy + ReqSizeY + sDpiScale(1))/2);
 
   Title = title;
   Text = text;
@@ -498,35 +498,35 @@ void sProgressDialog::Render()
 
   // border around window
   sGui->RectHL(r,sGC_HIGH2,sGC_LOW2);
-  r.Extend(-1);
+  r.Extend(sDpiScale(-1));
   sGui->RectHL(r,sGC_HIGH,sGC_LOW);
-  r.Extend(-1);
+  r.Extend(sDpiScale(-1));
 
   // title bar
   sRect titleRect = r;
-  titleRect.y1 = titleRect.y0 + 14;
+  titleRect.y1 = titleRect.y0 + sDpiScale(14);
 
   sGui->PropFont->SetColor(sGC_TEXT,sGC_BUTTON);
   sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT|sF2P_SPACE,titleRect,Title);
 
   titleRect.y0 = titleRect.y1;
-  titleRect.y1 = titleRect.y0+1;
+  titleRect.y1 = titleRect.y0+sDpiScale(1);
   sRect2D(titleRect,sGC_DRAW); // line separating title bar from window contents
 
   // window contents
   r.y0 = titleRect.y1;
   sRect inner = r;
-  inner.Extend(-4);
+  inner.Extend(sDpiScale(-4));
   sRectHole2D(r,inner,sGC_BACK);
 
   sRect rc0,rc1;
   rc0 = rc1 = inner;
-  rc0.y1 = rc1.y0 = rc0.y0 + sGui->PropFont->GetHeight() + 2;
+  rc0.y1 = rc1.y0 = rc0.y0 + sGui->PropFont->GetHeight() + sDpiScale(2);
   sGui->PropFont->SetColor(sGC_TEXT,sGC_BACK);
   sGui->PropFont->Print(sF2P_OPAQUE|sF2P_LEFT,rc0,Text);
 
   sGui->RectHL(rc1,sGC_DRAW,sGC_DRAW);
-  rc1.Extend(-1);
+  rc1.Extend(sDpiScale(-1));
   rc0 = rc1;
   rc0.x1 = rc1.x0 = rc0.x0 + sClamp(Percentage,0.0f,1.0f) * (rc0.x1-rc0.x0);
   sRect2D(rc0,sGC_SELECT);
@@ -721,14 +721,14 @@ void sFindWindow::OnLayout()
   ListRect = Client;
   ListRect.y0 = EditControl->Outer.y1;
 
-  Height = sGui->PropFont->GetHeight()+2;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(2);
 
 }
 
 void sFindWindow::OnCalcSize()
 {
-  ReqSizeX = 200;
-  ReqSizeY = 400;
+  ReqSizeX = sDpiScale(200);
+  ReqSizeY = sDpiScale(400);
 }
 
 void sFindWindow::OnPaint2D()
@@ -924,7 +924,7 @@ public:
     gh.Box(L"Save",sMessage(this,&sGuiThemeEditWindow::CmdButton,SAVE));
     gh.Box(L"Load",sMessage(this,&sGuiThemeEditWindow::CmdButton,LOAD));
 
-    gh.Grid->ReqSizeX = 400;
+    gh.Grid->ReqSizeX = sDpiScale(400);
   }
 
 };

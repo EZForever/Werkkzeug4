@@ -729,7 +729,7 @@ void sMain()
 
   sArray<sDirEntry> dirlist;
   sString<1024> wintitle;
-  wintitle.PrintF(L"werkkzeug4 player V%d.%d",WZ4_VERSION,WZ4_REVISION);
+  wintitle.PrintF(L"werkkzeug4 player v%d.%d/%s",WZ4_VERSION,WZ4_REVISION,WZ4_FORK);
 
   sSetWindowName(wintitle);
   const sChar *makepack=sGetShellString(L"p",L"-pack");
@@ -837,7 +837,7 @@ void sMain()
     selsetup.IconInt=100;
     selsetup.IconURL=L"http://www.farbrausch.com";
     selsetup.Caption=L"farbrausch";
-    selsetup.SubCaption.PrintF(L"werkkzeug4 player V%d.%d",WZ4_VERSION,WZ4_REVISION);
+    selsetup.SubCaption.PrintF(L"werkkzeug4 player v%d.%d/%s",WZ4_VERSION,WZ4_REVISION,WZ4_FORK);
     selsetup.DialogFlags = opt.DialogFlags;
     selsetup.DialogScreenX = opt.ScreenX;
     selsetup.DialogScreenY = opt.ScreenY;
@@ -866,7 +866,7 @@ void sMain()
   }
   if (Selection.Mode.Flags & sSM_FULLSCREEN) flags|=sISF_FULLSCREEN;
 
-  title.PrintAddF(L"  (player V%d.%d)",WZ4_VERSION,WZ4_REVISION);
+  title.PrintAddF(L"  (player v%d.%d/%s)",WZ4_VERSION,WZ4_REVISION,WZ4_FORK);
   if(sCONFIG_64BIT)
     title.PrintAddF(L" (64Bit)");
   sSetWindowName(title);

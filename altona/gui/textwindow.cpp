@@ -97,7 +97,7 @@ void sTextWindow::OnPaint2D()
     sRect lnr(TextRect);
     if(EditFlags & sTEF_LINENUMBER)
     {
-      TextRect.x0 = lnr.x1 = lnr.x0+40;
+      TextRect.x0 = lnr.x1 = lnr.x0+sDpiScale(40);
     }
     sInt h=Font->Print(TextFlags|sF2P_OPAQUE,TextRect,Text->Get(),-1,0,0,0,&pi);
     if(EditFlags & sTEF_LINENUMBER)
@@ -358,12 +358,12 @@ sBool sTextWindow::OnKey(sU32 key)
   switch(key&(0x8000ffff|sKEYQ_SHIFT|sKEYQ_CTRL))
   {
   case sKEY_WHEELUP:
-    ScrollTo(ScrollX,ScrollY-14*3);
+    ScrollTo(ScrollX,ScrollY-sDpiScale(14)*3);
     Update();
     scrolltocursor = 0;
     break;
   case sKEY_WHEELDOWN:
-    ScrollTo(ScrollX,ScrollY+14*3);
+    ScrollTo(ScrollX,ScrollY+sDpiScale(14)*3);
     Update();
     scrolltocursor = 0;
     break;

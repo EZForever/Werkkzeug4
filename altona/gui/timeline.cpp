@@ -460,7 +460,7 @@ static sInt AlignUpToTimebase(sInt value,sBool decimal)
 
 sWinTimeline::sWinTimeline(sTimelineInterface *tl)
 {
-  Height = 20 + sGui->PropFont->GetHeight();
+  Height = sDpiScale(20) + sGui->PropFont->GetHeight();
 
   Timeline = tl;
   Timeline->AddNotify(this);
@@ -505,12 +505,12 @@ void sWinTimeline::OnPaint2D()
   BeatEnd = Timeline->GetEnd();
   LoopEnable = Timeline->GetLooping();
 
-  width = Client.SizeX()-1;
-  y = Client.y1-Height+1;
+  width = Client.SizeX()-sDpiScale(1);
+  y = Client.y1-Height+sDpiScale(1);
   ytext = y+sGui->PropFont->GetHeight();
 
   r = Client;
-  r.y0 = y-1;
+  r.y0 = y-sDpiScale(1);
   r.y1 = y;
   sRect2D(r,sGC_DRAW);
 
@@ -563,18 +563,18 @@ void sWinTimeline::OnPaint2D()
 
   // draw tick marks
   sInt y0long = y;
-  sInt y0short = y+5;
+  sInt y0short = y+sDpiScale(5);
 
   for(sInt i=0;i<BeatEnd;i+=timeSkip)
   {
     x = sMulDiv(i,width,BeatEnd)+Client.x0;
     r.x0 = x;
-    r.x1 = x+1;
+    r.x1 = x+sDpiScale(1);
     r.y0 = ((i % ltSkip) != 0) ? y0short : y0long;
     sRect2D(r,(i&0x30000)==0?sGC_DRAW:sGC_DRAW);
   }
 
-  r.x0 = Client.x1 - 1;
+  r.x0 = Client.x1 - sDpiScale(1);
   r.x1 = Client.x1;
   r.y0 = y0long;
   sRect2D(r,sGC_DRAW); // last tick mark
@@ -595,19 +595,19 @@ void sWinTimeline::OnPaint2D()
     if(i == 0) // first one
     {
       r.x0 = labelTickPos[i];
-      r.x1 = (labelTickPos[i] + labelTickPos[i+1] + 1) / 2;
+      r.x1 = (labelTickPos[i] + labelTickPos[i+1] + sDpiScale(1)) / 2;
       align = sF2P_LEFT;
     }
     else if(i == count-1) // last one
     {
-      r.x0 = (labelTickPos[i-1] + labelTickPos[i] + 1) / 2;
+      r.x0 = (labelTickPos[i-1] + labelTickPos[i] + sDpiScale(1)) / 2;
       r.x1 = labelTickPos[i];
       align = sF2P_RIGHT;
     }
     else
     {
-      r.x0 = (labelTickPos[i-1] + labelTickPos[i] + 1) / 2;
-      r.x1 = (labelTickPos[i+1] + labelTickPos[i] + 1) / 2;
+      r.x0 = (labelTickPos[i-1] + labelTickPos[i] + sDpiScale(1)) / 2;
+      r.x1 = (labelTickPos[i+1] + labelTickPos[i] + sDpiScale(1)) / 2;
     }
 
     sGui->PropFont->Print(align|sF2P_OPAQUE|sF2P_LIMITED,r,text);
@@ -615,8 +615,8 @@ void sWinTimeline::OnPaint2D()
 
   // draw current time
   x = sMulDiv(BeatTime,width,BeatEnd)+Client.x0;
-  r.x0 = sMax(Client.x0,x-1);
-  r.x1 = x+1;
+  r.x0 = sMax(Client.x0,x-sDpiScale(1));
+  r.x1 = x+sDpiScale(1);
   r.y0 = y0long;
   sRect2D(r,sGC_RED);
 
@@ -732,7 +732,7 @@ sBool sWinTimetable::OnCheckHit(const sWindowDrag &dd)
 
 void sWinTimetable::OnCalcSize()
 {
-  Height = sGui->PropFont->GetHeight()+4;
+  Height = sGui->PropFont->GetHeight()+sDpiScale(4);
   ReqSizeX = Timeline->GetEnd() / Zoom;
   ReqSizeY = Timetable->MaxLines * Height;
 }
@@ -762,7 +762,7 @@ void sWinTimetable::OnPaint2D()
   sRect2D(Client,sGC_BACK);
 
   sInt x = Timeline->GetBeat()/Zoom+Client.x0;
-  sRect2D(x,Client.y0,x+1,Client.y1,sGC_SELECT);
+  sRect2D(x,Client.y0,x+sDpiScale(1),Client.y1,sGC_SELECT);
 
   sClipPop();
 

@@ -28,6 +28,9 @@
   <ItemGroup>
     <ClInclude Include="wz4\werkkzeug4\main.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="wz4\werkkzeug4\werkkzeug4.manifest" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F7D8A1EE-47F4-47F3-A29B-EEE0B924DA1B}</ProjectGuid>

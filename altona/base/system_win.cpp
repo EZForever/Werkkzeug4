@@ -33,6 +33,15 @@
 #include <vfw.h>
 #include <dbt.h>            // DBT_DEVNODES_CHANGED
 //#include <dxerr.h>
+
+#if sCONFIG_DPIAWARE
+
+#include <shellscalingapi.h>
+
+#pragma comment (lib, "shcore.lib")
+
+#endif
+
 #if sCONFIG_COMPILER_MSC
 #undef new
 #define _MFC_OVERRIDES_NEW
@@ -89,6 +98,35 @@ static sInt TimerEventTime;
 static HANDLE WConOut = 0;        // console output file
 static HANDLE WConIn  = 0;        // console input file
 
+#ifdef sCONFIG_DPIAWARE
+
+sInt sDpiCurrent = 96;
+
+typedef UINT  (sSTDCALL *GetDpiForWindowProc)(HWND hwnd);
+
+static GetDpiForWindowProc GetDpiForWindowPtr=0L;
+
+static void sDpiUpdate()
+{
+  // prefer external window, use desktop instead if no window have been created (say in sInit)
+  HWND hwnd = sExternalWindow ? sExternalWindow : sHWND;
+  hwnd = hwnd ? hwnd : GetDesktopWindow();
+  if (GetDpiForWindowPtr)
+  {
+    sDpiCurrent=GetDpiForWindowPtr(hwnd);
+  }
+  else
+  {
+    HMONITOR monitor=MonitorFromWindow(hwnd,MONITOR_DEFAULTTONEAREST);
+    UINT _;
+    sDpiCurrent = GetDpiForMonitor(monitor,MDT_EFFECTIVE_DPI,(UINT*)&sDpiCurrent, &_);
+  }
+}
+#else
+
+inline static void sDpiUpdate() {}
+
+#endif
 
 // interfaces for user32.dll parts, which are not in every 
 // system version available.
@@ -1915,8 +1953,15 @@ LRESULT WINAPI MsgProc(HWND win,UINT msg,WPARAM wparam,LPARAM lparam)
       hdc = GetDC(sExternalWindow ? sExternalWindow : win);    // use external window if available
       sGDIDCOffscreen = CreateCompatibleDC(hdc);
       ReleaseDC(sExternalWindow ? sExternalWindow : win,hdc);
+      sDpiUpdate();
     }
     break;
+
+#if sCONFIG_DPIAWARE
+  case WM_DPICHANGED:
+    sDpiUpdate();
+    break;
+#endif
 
   case WM_PAINT:
     {
@@ -2493,6 +2538,16 @@ void sInit(sInt flags,sInt xs,sInt ys)
       FreeLibrary(dwmapi);
     }
   }
+
+#if sCONFIG_DPIAWARE
+  HMODULE user32=GetModuleHandle(L"USER32.dll");
+  if (user32)
+  {
+    GetDpiForWindowPtr=(GetDpiForWindowProc)GetProcAddress(user32,"GetDpiForWindow");
+  }
+
+  sDpiUpdate();
+#endif
 
   sSystemFlags = flags;
 

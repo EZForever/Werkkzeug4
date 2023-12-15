@@ -1252,7 +1252,7 @@ void sMain()
   sInt flags=sISF_2D|sISF_3D|sISF_CONTINUOUS; // need 2D for text rendering
 
   sString<256> title=sGetWindowName();
-  title.PrintAddF(L"  (player V%d.%d)",WZ4_VERSION,WZ4_REVISION);
+  title.PrintAddF(L"  (player v%d.%d/%s)",WZ4_VERSION,WZ4_REVISION,WZ4_FORK);
   if(sCONFIG_64BIT)
     title.PrintAddF(L" (64Bit)");
   sSetWindowName(title);
