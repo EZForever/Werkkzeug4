@@ -1417,7 +1417,11 @@ sPRINTING0(sFatal,sFormatStringBuffer buf; sFormatStringBaseCtx(buf,format);buf,
 
 
 #if sRELEASE
+#if sSTRIPPED
+#define sVERIFYRELEASE(x) {if(!(x))sVerifyFalse(L"<unknown source>",__LINE__);}
+#else
 #define sVERIFYRELEASE(x) {if(!(x))sVerifyFalse(sTXT(__FILE__),__LINE__);}
+#endif
 #else
 #define sVERIFYRELEASE(x) {if(!(x)){ sDEBUGBREAK ;sVerifyFalse(sTXT(__FILE__),__LINE__);}}
 #endif
