@@ -106,9 +106,18 @@ typedef UINT  (sSTDCALL *GetDpiForWindowProc)(HWND hwnd);
 
 static GetDpiForWindowProc GetDpiForWindowPtr=0L;
 
-static void sDpiUpdate()
+static void sInitDpi()
 {
-  // prefer external window, use desktop instead if no window have been created (say in sInit)
+  HMODULE user32 = GetModuleHandle(L"USER32.dll");
+  if (user32)
+  {
+    GetDpiForWindowPtr = (GetDpiForWindowProc)GetProcAddress(user32, "GetDpiForWindow");
+  }
+}
+
+void sDpiUpdate()
+{
+  // prefer external window, use desktop instead if no window have been created (say in/before sInit)
   HWND hwnd = sExternalWindow ? sExternalWindow : sHWND;
   hwnd = hwnd ? hwnd : GetDesktopWindow();
   if (GetDpiForWindowPtr)
@@ -122,9 +131,6 @@ static void sDpiUpdate()
     sDpiCurrent = GetDpiForMonitor(monitor,MDT_EFFECTIVE_DPI,(UINT*)&sDpiCurrent, &_);
   }
 }
-#else
-
-inline static void sDpiUpdate() {}
 
 #endif
 
@@ -2446,6 +2452,11 @@ void sExternMainInit(void *p_instance, void *p_hwnd)
 
   sSetRunlevel(0x80);
 
+#if sCONFIG_DPIAWARE
+  sInitDpi();
+  sDpiUpdate();
+#endif
+
   // don't initialize joypad for xsi!
 #if sCONFIG_OPTION_XSI
   SetXSIModeD3D(sTRUE);
@@ -2539,16 +2550,6 @@ void sInit(sInt flags,sInt xs,sInt ys)
     }
   }
 
-#if sCONFIG_DPIAWARE
-  HMODULE user32=GetModuleHandle(L"USER32.dll");
-  if (user32)
-  {
-    GetDpiForWindowPtr=(GetDpiForWindowProc)GetProcAddress(user32,"GetDpiForWindow");
-  }
-
-  sDpiUpdate();
-#endif
-
   sSystemFlags = flags;
 
   // is external window present?
@@ -2586,8 +2587,8 @@ void sInit(sInt flags,sInt xs,sInt ys)
     
       RECT r2;
       r2.left = r2.top = 0;
-      r2.right = sDpiScale(xs);
-      r2.bottom = sDpiScale(ys);
+      r2.right = xs;
+      r2.bottom = ys;
       AdjustWindowRect(&r2,style,FALSE);
        
       sHWND = CreateWindowW(L"ALTONA",caption,
@@ -2690,6 +2691,11 @@ restart:
 
   sInitKeys();
   sSetRunlevel(0x80);
+
+#if sCONFIG_DPIAWARE
+  sInitDpi();
+  sDpiUpdate();
+#endif
 
   sMain();
 

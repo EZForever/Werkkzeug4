@@ -244,10 +244,12 @@ void sRender2DGet(sU32 *data);        // get pixels (bitmap -> data)
 
 extern sInt sDpiCurrent;
 
+void sDpiUpdate();
 sINLINE sInt sDpiScale(sInt metric) { return sMulDiv(metric, sDpiCurrent, 96); }
 
 #else
 
+sINLINE void sDpiUpdate() {}
 sINLINE sInt sDpiScale(sInt metric) { return metric; }
 
 #endif

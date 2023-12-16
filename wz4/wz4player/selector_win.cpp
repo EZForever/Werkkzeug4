@@ -36,7 +36,7 @@ namespace bob
   static sArray<sScreenInfoXY> Aspects;
 
   // size of dialog window
-  //static const sInt H=160;
+  //static const sInt H=sDpiScale(160);
 
   // dialog window members
   static HFONT CaptionFont;
@@ -103,7 +103,7 @@ namespace bob
 
   static HWND AddStatic(const sChar *text,sInt x,sInt y,sInt w, sBool caption=sFALSE, sBool disabled=sFALSE)
   {
-    sInt h=caption?30:20;
+    sInt h=sDpiScale(caption?30:20);
     HWND wnd=CreateWindowEx(0,L"STATIC",text,WS_VISIBLE|WS_CHILD|(disabled?WS_DISABLED:0),x,y,w,h,SelWin,0,0,0);
     SendMessage(wnd,WM_SETFONT,(WPARAM)(caption?CaptionFont:GetStockObject(DEFAULT_GUI_FONT)),0);
     return wnd;
@@ -111,12 +111,12 @@ namespace bob
 
   static HWND AddButton(const sChar *text,sInt x,sInt y, sInt w,sBool deflt)
   {
-    if (!w) w=80;
+    if (!w) w=sDpiScale(80);
 
     sInt style=WS_VISIBLE|WS_CHILD|WS_TABSTOP;
     if (deflt) style|=BS_DEFPUSHBUTTON; else style|=BS_PUSHBUTTON;
 
-    HWND wnd=CreateWindowEx(0,L"BUTTON",text,style,x,y,w,25,SelWin,0,0,0);
+    HWND wnd=CreateWindowEx(0,L"BUTTON",text,style,x,y,w,sDpiScale(25),SelWin,0,0,0);
     SendMessage(wnd,WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),0);
     if (deflt) SetFocus(wnd);
     return wnd;
@@ -132,7 +132,7 @@ namespace bob
 
   static Link& AddLink(const sChar *text,sInt x,sInt y, sInt w, sInt h)
   {
-    if (!w) w=32;
+    if (!w) w=sDpiScale(32);
     if (!h) h=w;
 
     sInt style=WS_VISIBLE|WS_CHILD|BS_OWNERDRAW;
@@ -149,7 +149,7 @@ namespace bob
   {
     sInt style=WS_VISIBLE|WS_CHILD|WS_TABSTOP;
     style|=BS_AUTOCHECKBOX ;
-    HWND wnd=CreateWindowEx(0,L"BUTTON",text,style,x,y,w,22,SelWin,0,0,0);
+    HWND wnd=CreateWindowEx(0,L"BUTTON",text,style,x,y,w,sDpiScale(22),SelWin,0,0,0);
     SendMessage(wnd,WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),0);
     SendMessage(wnd,BM_SETCHECK,state,0);
     return wnd;
@@ -160,7 +160,7 @@ namespace bob
     sInt style=WS_VISIBLE|WS_CHILD|WS_TABSTOP|WS_VSCROLL;
     style|=CBS_DROPDOWNLIST;
     
-    HWND wnd=CreateWindowEx(0,L"COMBOBOX",L"",style,x,y,w,125,SelWin,0,0,0);
+    HWND wnd=CreateWindowEx(0,L"COMBOBOX",L"",style,x,y,w,sDpiScale(125),SelWin,0,0,0);
     SendMessage(wnd,WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),0);
 
     while (choices && choices[0])
@@ -285,6 +285,11 @@ namespace bob
       }
       break;
 
+#if sCONFIG_DPIAWARE
+    case WM_DPICHANGED:
+      sDpiUpdate(); // this actually can't do much since sHWND has not been initialized yet
+      break;
+#endif
     }
 
     return DefWindowProc(hwnd,uMsg,wParam,lParam);
@@ -434,62 +439,62 @@ sBool bOpenSelector(const bSelectorSetup &setup,bSelectorResult &result)
   SelWinClass.lpszClassName=L"bSelector";
   RegisterClassEx(&SelWinClass);
 
-  static const sInt W=200;
+  static const sInt W=sDpiScale(200);
 
-  CaptionFont=CreateFont(30,0,0,0,FW_BOLD,FALSE,FALSE,FALSE,DEFAULT_CHARSET,
+  CaptionFont=CreateFont(sDpiScale(30),0,0,0,FW_BOLD,FALSE,FALSE,FALSE,DEFAULT_CHARSET,
                          OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,PROOF_QUALITY,DEFAULT_PITCH|FF_DONTCARE,L"Tahoma");
 
-  SelWin=CreateWindowEx(0,L"bSelector",setup.Title,WS_CAPTION,CW_USEDEFAULT,CW_USEDEFAULT,W,100,0,0,0,0);
+  SelWin=CreateWindowEx(0,L"bSelector",setup.Title,WS_CAPTION,CW_USEDEFAULT,CW_USEDEFAULT,W,sDpiScale(100),0,0,0,0);
 
   Links.HintSize(32);
 
   sInt y=0;
-  sInt leftx=5;
-  sInt leftx2=10;
-  sInt margin=5;
+  sInt leftx=sDpiScale(5);
+  sInt leftx2=sDpiScale(10);
+  sInt margin=sDpiScale(5);
 
   // add main link/icon if applicable
 
   if (setup.IconInt)
   {
     y+=margin;
-    Link &l=AddLink(setup.IconURL,leftx,y,32,32);
+    Link &l=AddLink(setup.IconURL,leftx,y,sDpiScale(32),sDpiScale(32));
     l.Icon=LoadIcon(GetModuleHandle(0),MAKEINTRESOURCE(setup.IconInt));
-    AddStatic(setup.Caption,leftx+32+margin,y+2,200,sTRUE);
-    y+=32;
+    AddStatic(setup.Caption,leftx+sDpiScale(32)+margin,y+sDpiScale(2),sDpiScale(200),sTRUE);
+    y+=sDpiScale(32);
   }
 
   if (!setup.SubCaption.IsEmpty())
   {
-    AddStatic(setup.SubCaption,leftx+32+margin,y,200,sFALSE,sTRUE);
-    y+=10;
+    AddStatic(setup.SubCaption,leftx+sDpiScale(32)+margin,y,sDpiScale(200),sFALSE,sTRUE);
+    y+=sDpiScale(10);
   }
 
-  y+=margin; sInt gy=y; y+=margin+15;
+  y+=margin; sInt gy=y; y+=margin+sDpiScale(15);
 
   // add video options
-  sInt gw=90;
-  AddStatic(L"Resolution",leftx2,y,200);
-  ResBox=AddComboBox(resolutions,W-leftx2-gw,y-3,gw,defres);
-  y+=25;
-  AddStatic(L"Aspect Ratio",leftx2,y,200);
-  AspectBox=AddComboBox(aspects,W-leftx2-gw,y-3,gw,defasp);
-  y+=25;
+  sInt gw=sDpiScale(90);
+  AddStatic(L"Resolution",leftx2,y,sDpiScale(200));
+  ResBox=AddComboBox(resolutions,W-leftx2-gw,y-sDpiScale(3),gw,defres);
+  y+=sDpiScale(25);
+  AddStatic(L"Aspect Ratio",leftx2,y,sDpiScale(200));
+  AspectBox=AddComboBox(aspects,W-leftx2-gw,y-sDpiScale(3),gw,defasp);
+  y+=sDpiScale(25);
   if(MULTISAMPLING)
   {
-    AddStatic(L"Multisampling",leftx2,y,200);
-    FSAABox=AddComboBox(fsaa,W-leftx2-gw,y-3,gw,deffsaa);
-    y+=25;
+    AddStatic(L"Multisampling",leftx2,y,sDpiScale(200));
+    FSAABox=AddComboBox(fsaa,W-leftx2-gw,y-sDpiScale(3),gw,deffsaa);
+    y+=sDpiScale(25);
   }
 
-  FSCheck=AddCheck(L"Fullscreen",leftx2,y,70,full);
-  VSCheck=AddCheck(L"Wait for VSync",W-leftx2-90,y,90,1);
-  y+=25;
+  FSCheck=AddCheck(L"Fullscreen",leftx2,y,sDpiScale(70),full);
+  VSCheck=AddCheck(L"Wait for VSync",W-leftx2-sDpiScale(90),y,sDpiScale(90),1);
+  y+=sDpiScale(25);
 
   AddGroup(L"Video",leftx,gy,W-2*leftx,y-gy);
-  y+=margin; gy=y; y+=margin+15;
+  y+=margin; gy=y; y+=margin+sDpiScale(15);
 
-  //MBlurCheck=AddCheck(L"Motion Blur Effect",10,H-85,200,1);
+  //MBlurCheck=AddCheck(L"Motion Blur Effect",sDpiScale(10),H-sDpiScale(85),sDpiScale(200),1);
   LoopCheck = 0;
   CoreCheck = 0;
   LowQCheck = 0;
@@ -497,38 +502,38 @@ sBool bOpenSelector(const bSelectorSetup &setup,bSelectorResult &result)
 
   if(Setup->DialogFlags & wDODF_HiddenParts)
   {
-    AddStatic(L"Hidden Parts",leftx2,y,200);
-    HiddenPartBox=AddComboBox(setup.HiddenPartChoices,W-leftx2-gw,y-3,gw,0);
+    AddStatic(L"Hidden Parts",leftx2,y,sDpiScale(200));
+    HiddenPartBox=AddComboBox(setup.HiddenPartChoices,W-leftx2-gw,y-sDpiScale(3),gw,0);
 
-    y+=25;
+    y+=sDpiScale(25);
   }
   if(!(Setup->DialogFlags & wDODF_NoLoop))
   {
-    LoopCheck=AddCheck(L"Loop Demo",leftx2,y,100,0);
+    LoopCheck=AddCheck(L"Loop Demo",leftx2,y,sDpiScale(100),0);
     advance = 1;
   }
   if (Setup->DialogFlags & wDODF_Benchmark)
   {
-    BenchmarkCheck=AddCheck(L"Benchmark",W-leftx2-72,y,72,0);
+    BenchmarkCheck=AddCheck(L"Benchmark",W-leftx2-sDpiScale(72),y,sDpiScale(72),0);
     advance = 1;
   }
   if(advance)
-    y+=25;
+    y+=sDpiScale(25);
   
   if(Setup->DialogFlags & wDODF_Multithreading)
   {
-    CoreCheck = AddCheck(L"Reserve one core for Windows",leftx2,y,200,0);
-    y+=25;
+    CoreCheck = AddCheck(L"Reserve one core for Windows",leftx2,y,sDpiScale(200),0);
+    y+=sDpiScale(25);
   }
   if(Setup->DialogFlags & wDODF_LowQuality)
   {
-    LowQCheck = AddCheck(L"Low Quality Mode",leftx2,y,200,0);
-    y+=25;
+    LowQCheck = AddCheck(L"Low Quality Mode",leftx2,y,sDpiScale(200),0);
+    y+=sDpiScale(25);
   }
 
 
   AddGroup(L"Options",leftx,gy,W-2*leftx,y-gy);
-  y+=margin; gy=y; y+=15;
+  y+=margin; gy=y; y+=sDpiScale(15);
 
   // sharing sites...
   if (setup.Sites[0].IconInt)
@@ -539,19 +544,19 @@ sBool bOpenSelector(const bSelectorSetup &setup,bSelectorResult &result)
       const bSelectorSetup::ShareSite &site=setup.Sites[i];
       if (!site.IconInt) break;
 
-      Link &l=AddLink(site.URL,ssx,y,16,16);
+      Link &l=AddLink(site.URL,ssx,y,sDpiScale(16),sDpiScale(16));
       l.Icon=LoadIcon(GetModuleHandle(0),MAKEINTRESOURCE(site.IconInt));
-      ssx+=20;
+      ssx+=sDpiScale(20);
     }
-    y+=20;
+    y+=sDpiScale(20);
     AddGroup(L"Share!",leftx,gy,W-2*leftx,y-gy);
   }
 
   y+=2*margin;
   Die=AddButton(L"Die",leftx,y,0,0);
-  Demo=AddButton(L"Demo",W-leftx-80,y,0,1);
-  AddStatic(L"||",leftx+92,y+6,15);
-  y+=25;
+  Demo=AddButton(L"Demo",W-leftx-sDpiScale(80),y,0,1);
+  AddStatic(L"||",leftx+sDpiScale(92),y+sDpiScale(6),sDpiScale(15));
+  y+=sDpiScale(25);
 
   
   // size and position window
