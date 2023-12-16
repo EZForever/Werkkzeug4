@@ -2586,8 +2586,8 @@ void sInit(sInt flags,sInt xs,sInt ys)
     
       RECT r2;
       r2.left = r2.top = 0;
-      r2.right = xs; 
-      r2.bottom = ys;
+      r2.right = sDpiScale(xs);
+      r2.bottom = sDpiScale(ys);
       AdjustWindowRect(&r2,style,FALSE);
        
       sHWND = CreateWindowW(L"ALTONA",caption,

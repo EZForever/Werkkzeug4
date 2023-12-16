@@ -2445,11 +2445,11 @@ WinPageList::WinPageList() : sSingleTreeWindow<wPage>(&Doc->Pages,&wPage::TreeIn
   SelectMsg = sMessage(this,&WinPageList::CmdSetPage);
   OrderMsg = sMessage(App,&MainWindow::ChangeDoc);
   
-  AddField(L"Name",sLWF_EDIT,100,sMEMBERPTR(wPage,Name));
-  AddFieldChoice(L"Mode",0,35,sMEMBERPTR(wPage,IsTree),L"Stack|Tree");
-  AddField(L"Include",sLWF_EDIT,100,1,0);
-//  AddFieldChoice(L"Access",sLWF_EDIT,50,sMEMBERPTR(wPage,ManualWriteProtect),L"Read Write|Read Only");
-  AddField(L"Access",sLWF_EDIT,50,2,0);
+  AddField(L"Name",sLWF_EDIT,sDpiScale(100), sMEMBERPTR(wPage, Name));
+  AddFieldChoice(L"Mode",0,sDpiScale(35), sMEMBERPTR(wPage, IsTree), L"Stack|Tree");
+  AddField(L"Include",sLWF_EDIT,sDpiScale(100), 1, 0);
+//  AddFieldChoice(L"Access",sLWF_EDIT,sDpiScale(50),sMEMBERPTR(wPage,ManualWriteProtect),L"Read Write|Read Only");
+  AddField(L"Access",sLWF_EDIT,sDpiScale(50), 2, 0);
   AddHeader();
   SetIncludePage = 0;
 }

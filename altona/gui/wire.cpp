@@ -1596,11 +1596,11 @@ void sWireMasterWindow::_ScreenAlign(sLayoutFrameWindow *lfw)
   if(Scan->Token=='-')
   {
     Scan->Match('-');
-    lfw->Pos = -Scan->ScanInt();
+    lfw->Pos = sDpiScale(-Scan->ScanInt());
   }
   else if(Scan->Token==sTOK_INT)
   {
-    lfw->Pos = Scan->ScanInt();
+    lfw->Pos = sDpiScale(Scan->ScanInt());
   }
   if(Scan->Token==sTOK_NAME && (Scan->Name==L"bottom" || Scan->Name==L"right"))
   {
