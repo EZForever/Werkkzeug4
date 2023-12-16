@@ -17,7 +17,7 @@ menu menu_file "File"
   item main.New "New";
   item main.Open "Open .." 'o'|CTRL|SCOPE0;
   item main.OpenBackup "Open Backup";
-  item main.Merge "merge ..";
+  item main.Merge "Merge ..";
   item main.Save "Save" 's'|CTRL|SCOPE0;
   item main.SaveAs "SaveAs ..";
   spacer;
