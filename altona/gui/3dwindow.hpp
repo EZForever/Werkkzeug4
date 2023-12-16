@@ -23,6 +23,8 @@ class s3DWindow : public sWireClientWindow
   sBool QuakeMode;
   sInt QuakeMask;
   sVector30 QuakeSpeed;
+
+  sMessageTimer* UpdateTimer;
 protected:
   sSimpleMaterial *WireMtrl;
   sSimpleMaterial *WireMtrlNoZ;

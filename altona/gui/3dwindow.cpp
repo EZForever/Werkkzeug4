@@ -38,11 +38,13 @@ s3DWindow::s3DWindow()
 
   QuakeSpeed.Init(0,0,0);
   QuakeMask = 0;
-  Continuous = 1;
+  Continuous = 0;
   QuakeTime = sGetTime();
 
   SideSpeed = ForeSpeed = 0.000020f;
   SpeedDamping = 0.995f;
+
+  UpdateTimer = Continuous ? 0 : new sMessageTimer(sMessage(this, &s3DWindow::Update), 4, 1);
 
 #if sRENDERER==sRENDER_DX11
   ColorRT = 0;
@@ -52,6 +54,7 @@ s3DWindow::s3DWindow()
 
 s3DWindow::~s3DWindow()
 {
+  delete UpdateTimer;
   delete WireMtrl;
   delete WireMtrlNoZ;
   delete WireGeo;
