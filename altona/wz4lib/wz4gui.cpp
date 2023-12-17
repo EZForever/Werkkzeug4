@@ -1372,6 +1372,13 @@ void MainWindow::CmdSaveAs()
 
 void MainWindow::CmdSave()
 {
+  // if it's a new project, then "Save" == "SaveAs"
+  if(Doc->Filename.IsEmpty())
+  {
+    CmdSaveAs();
+    return;
+  }
+
   if(sCheckFile(Doc->Filename))
   {
     if(!sCOMMANDLINE)
@@ -1431,6 +1438,17 @@ void MainWindow::CmdSave2()
     sFORALL(Doc->Includes,inc)
       if(!inc->Protected)
         inc->Save();
+
+    // if project path was not set previously (due to saving a new project), set it now
+    // previously referenced files should be using absloute paths so should be fine
+    if (Doc->DocOptions.ProjectPath.IsEmpty())
+    {
+      sString<4096> path;
+      sExtractPath(Doc->Filename, path);
+      Doc->DocOptions.ProjectPath.Init(path);
+      sChangeDir(path);
+    }
+
     Status->PrintF(STATUS_MESSAGE,L"saved <%s>",Doc->Filename);
     Status->SetColor(STATUS_MESSAGE,0xff00ff00);
   }

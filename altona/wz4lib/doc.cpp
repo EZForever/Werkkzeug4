@@ -2331,7 +2331,31 @@ template <class streamer> void wDocOptions::Serialize_(streamer &s)
   sVERIFY(sCOUNTOF(sColorPickerWindow::PaletteColors)==32);
   if(version)
   {
-    s | ProjectPath;
+    // reading: read project path just fine
+    // writing, project path same as .wz4 path: ignore and leave empty (since referenced files are already in relative paths)
+    // writing, otherwise: project path is manually set, save it
+    if (s.IsReading() || sCmpStringPLen(ProjectPath, Doc->Filename, sGetStringLen(ProjectPath)) != 0)
+    {
+      s | ProjectPath;
+    }
+    else
+    {
+      sString<4096> filepath;
+      sExtractPath(Doc->Filename, filepath);
+      filepath.StripRight(L"/\\");
+
+      sString<4096> projpath(ProjectPath);
+      projpath.StripRight(L"/\\");
+      if (sCmpStringP(projpath, filepath) == 0)
+      {
+        sPoolString empty;
+        s | empty;
+      }
+      else
+      {
+        s | ProjectPath;
+      }
+    }
     if(version>=2)  s | ProjectName;
     if(version>=11) s | ProjectId | SiteId;
     if(version>=3)  s | TextureQuality;
@@ -2503,8 +2527,17 @@ sBool wDocument::Load(const sChar *filename)
   wDocInclude *inc;
 
   sBool ok = sLoadObject(filename,this);
-  if(ok)
+  if (ok)
+  {
     Filename = filename;
+    if (DocOptions.ProjectPath.IsEmpty())
+    {
+      sString<4096> path;
+      sExtractPath(filename, path);
+      DocOptions.ProjectPath.Init(path);
+      sChangeDir(path);
+    }
+  }
   sFORALL(Includes,inc)
     if(ok)
       if(!inc->Load())
