@@ -2441,6 +2441,7 @@ wDocument::wDocument()
   TestOptions.Init();
   PostLoadAction = 0;
   FinalizeAction = 0;
+  DocChanged = sFALSE;
   CacheLRU = 1;
   IsPlayer = 0;
   CurrentPage = 0;
