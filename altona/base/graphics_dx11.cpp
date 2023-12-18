@@ -977,9 +977,9 @@ void sGetScreenInfo(sScreenInfo &si,sInt flags,sInt display)
       DXErr(ada->GetDesc(&adesc));
       
 
-      const D3D_FEATURE_LEVEL levels[4] = { D3D_FEATURE_LEVEL_11_0,D3D_FEATURE_LEVEL_10_1,D3D_FEATURE_LEVEL_10_0,D3D_FEATURE_LEVEL_9_3 };
+      const D3D_FEATURE_LEVEL levels[] = { D3D_FEATURE_LEVEL_11_0,D3D_FEATURE_LEVEL_10_1,D3D_FEATURE_LEVEL_10_0,D3D_FEATURE_LEVEL_9_3 };
       ID3D11Device *dev;
-      hr = D3D11CreateDevice(ada,D3D_DRIVER_TYPE_UNKNOWN,0,0,levels,3,D3D11_SDK_VERSION,&dev,0,0);
+      hr = D3D11CreateDevice(ada,D3D_DRIVER_TYPE_UNKNOWN,0,0,levels,sCOUNTOF(levels),D3D11_SDK_VERSION,&dev,0,0);
       if(hr==DXGI_ERROR_UNSUPPORTED) break;
       DXErr(hr);
 
@@ -1060,6 +1060,8 @@ void sGetScreenInfo(sScreenInfo &si,sInt flags,sInt display)
 
       DXErr(ada->Release());
     }
+
+    DXErr(fac->Release());
   }
 
   // copy screeninfo;
