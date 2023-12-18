@@ -95,11 +95,11 @@ void sMain()
   sInitGui();
 //  sCreateZBufferRT(1600,1200);
   sGui->AddBackWindow(new Wz4FrMainWindow);
-  App->WikiPath = L"c:/svn/farbrausch/wz4frwiki";
-  App->UnitTestPath = L"c:/svn/farbrausch/werkkzeug4/unittest";
+//  App->WikiPath = L"c:/svn/farbrausch/wz4frwiki";
+//  App->UnitTestPath = L"c:/svn/farbrausch/werkkzeug4/unittest";
 
 //  App->WikiCheckout = L"svn checkout svn://dns49878.dyndns.org:27730/wz4frwiki c:/svn/farbrausch/wz4frwiki --username wiki --password qwer12";
-  App->WikiCheckout = L"svn checkout svn://192.168.20.40:27730/farbrausch/wz4frwiki c:/svn/farbrausch/wz4frwiki --username wiki --password qwer12";
+//  App->WikiCheckout = L"svn checkout svn://192.168.20.40:27730/farbrausch/wz4frwiki c:/svn/farbrausch/wz4frwiki --username wiki --password qwer12";
   App->MainInit();
   sSetWindowName(L"werkkzeug4");
 #if sRENDERER!=sRENDER_DX11
