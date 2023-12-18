@@ -116,8 +116,8 @@ static void MoveWindow(sWindow *parent,const sRect &old,sInt dx,sInt dy,sInt mas
 
 void sSizeBorder::OnCalcSize()
 {
-  ReqSizeX = sDpiScale(8);
-  ReqSizeY = sDpiScale(8);
+  ReqSizeX = sDpiScale(8) & ~1;
+  ReqSizeY = sDpiScale(8) & ~1;
 }
 
 void sSizeBorder::OnLayout()

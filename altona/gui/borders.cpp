@@ -15,8 +15,8 @@
 
 void sFocusBorder::OnCalcSize()
 {
-  ReqSizeX = sDpiScale(2);
-  ReqSizeY = sDpiScale(2);
+  ReqSizeX = sDpiScale(2) & ~1;
+  ReqSizeY = sDpiScale(2) & ~1;
 }
 
 void sFocusBorder::OnLayout()
@@ -47,8 +47,8 @@ sThickBorder::sThickBorder()
 
 void sThickBorder::OnCalcSize()
 {
-  ReqSizeX = sDpiScale(4);
-  ReqSizeY = sDpiScale(4);
+  ReqSizeX = sDpiScale(4) & ~1;
+  ReqSizeY = sDpiScale(4) & ~1;
 }
 
 void sThickBorder::OnLayout()
@@ -82,8 +82,8 @@ void sThickBorder::OnPaint2D()
 
 void sThinBorder::OnCalcSize()
 {
-  ReqSizeX = sDpiScale(2);
-  ReqSizeY = sDpiScale(2);
+  ReqSizeX = sDpiScale(2) & ~1;
+  ReqSizeY = sDpiScale(2) & ~1;
 }
 
 void sThinBorder::OnLayout()
@@ -114,8 +114,8 @@ sSpaceBorder::sSpaceBorder(sInt pen)
 
 void sSpaceBorder::OnCalcSize()
 {
-  ReqSizeX = sDpiScale(6);
-  ReqSizeY = sDpiScale(6);
+  ReqSizeX = sDpiScale(6) & ~1;
+  ReqSizeY = sDpiScale(6) & ~1;
 }
 
 void sSpaceBorder::OnLayout()
