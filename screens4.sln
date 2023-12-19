@@ -37,6 +37,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_stuff", "_stuff", "{144236
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_rules", "_rules", "{54BDA809-C9E4-4BEA-9A26-41F66C6E6D19}"
+	ProjectSection(SolutionItems) = preProject
+		rules\wz4.targets = rules\wz4.targets
+		rules\wz4.xml = rules\wz4.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_doc", "_doc", "{5789BE30-3ECA-40AE-8651-86934670E7B5}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
