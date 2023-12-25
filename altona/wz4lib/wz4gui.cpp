@@ -1414,6 +1414,8 @@ void MainWindow::CmdAutoSave()
     }
     to.PrintF(L"%s/!1_autosave.wz4",BackupDir);
     sBool sc = Doc->DocChanged;
+    sString<2048> sf = Doc->Filename;
+    Doc->Filename = to;
     if(sSaveObject(to,Doc))
     {
       Status->PrintF(STATUS_MESSAGE,L"autosave ok");
@@ -1424,6 +1426,7 @@ void MainWindow::CmdAutoSave()
       Status->SetColor(STATUS_MESSAGE,0xff00ff00);
     }
     Doc->DocChanged = sc;
+    Doc->Filename = sf;
     AutosaveTimer = 0;
   }
 }
@@ -1816,7 +1819,20 @@ void MainWindow::CmdEditTheme()
 
 void MainWindow::CmdMusicDialog()
 {
-  sOpenFileDialog(L"Open Music File",L"ogg",sSOF_LOAD,Doc->DocOptions.MusicFile,sMessage(this,&MainWindow::CmdReloadMusic),sMessage());
+  sOpenFileDialog(L"Open Music File",L"ogg",sSOF_LOAD,Doc->DocOptions.MusicFile,sMessage(this,&MainWindow::CmdMusicDialog2),sMessage());
+}
+
+void MainWindow::CmdMusicDialog2()
+{
+  sInt len = sGetStringLen(Doc->DocOptions.ProjectPath);
+  if (sCmpStringPLen(Doc->DocOptions.ProjectPath, Doc->DocOptions.MusicFile, len) == 0)
+  {
+    sString<4096> path(Doc->DocOptions.MusicFile);
+    if (path[len] == '/' || path[len] == '\\') len++;
+    path.CutLeft(len);
+    Doc->DocOptions.MusicFile.Init(path);
+  }
+  CmdReloadMusic();
 }
 
 void MainWindow::CmdReloadMusic()
@@ -4623,10 +4639,10 @@ void WinStack::OnPaint2D()
         if(op->Hide)
         {
           sRect2D(r,0);
-          sLine2D(r.x0,r.y0+sDpiScale(0),r.x1-sDpiScale(1),r.y1-sDpiScale(2),sGC_RED);
-          sLine2D(r.x0,r.y0+sDpiScale(1),r.x1-sDpiScale(1),r.y1-sDpiScale(1),sGC_RED);
-          sLine2D(r.x0,r.y1-sDpiScale(2),r.x1-sDpiScale(1),r.y0+sDpiScale(0),sGC_RED);
-          sLine2D(r.x0,r.y1-sDpiScale(1),r.x1-sDpiScale(1),r.y0+sDpiScale(1),sGC_RED);
+          sLine2D(r.x0,r.y0+sDpiScale(0)  ,r.x1,r.y1-sDpiScale(1)-1,sGC_RED);
+          sLine2D(r.x0,r.y0+sDpiScale(1)  ,r.x1,r.y1-sDpiScale(0)-1,sGC_RED);
+          sLine2D(r.x0,r.y1-sDpiScale(1)-1,r.x1,r.y0+sDpiScale(0)  ,sGC_RED);
+          sLine2D(r.x0,r.y1-sDpiScale(0)-1,r.x1,r.y0+sDpiScale(1)  ,sGC_RED);
           sGui->PropFont->Print(namepf,r,name);
         }
         else

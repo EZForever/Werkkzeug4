@@ -202,6 +202,7 @@ public:
   void CmdUpdateVarBpm();
   void CmdChangeTimeline();
   void CmdMusicDialog();
+  void CmdMusicDialog2();
   void CmdReloadMusic();
   void CmdMusicLength();
   void CmdSetAmbient(sDInt);

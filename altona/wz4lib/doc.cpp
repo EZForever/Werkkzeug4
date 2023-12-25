@@ -2301,11 +2301,12 @@ void wDocOptions::Init()
   BeatsPerSecond = 0x10000;
   BeatStart = 0;
   Beats = 32;
+  Infinite = 0;
+  MusicFile = L"";
   ScreenX = 800;
   ScreenY = 600;
   SampleRate = 44100;
   DialogFlags = wDODF_Benchmark;
-  Infinite = 0;
 
   VariableBpm = 0;
   BpmSegments.Clear();
