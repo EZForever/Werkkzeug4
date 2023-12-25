@@ -6,11 +6,9 @@
   <ItemGroup>
     <ClCompile Include="wz4\wz4player\main.cpp" />
     <ClCompile Include="wz4\wz4player\selector_win.cpp" />
-    <ClCompile Include="wz4\wz4player\vorbisplayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wz4\wz4player\selector_win.hpp" />
-    <ClInclude Include="wz4\wz4player\vorbisplayer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="wz4\wz4player\icon.rc" />

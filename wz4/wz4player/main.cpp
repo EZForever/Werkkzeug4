@@ -10,13 +10,13 @@
 #include "wz4frlib/packfile.hpp"
 #include "wz4frlib/packfilegen.hpp"
 #include "wz4lib/version.hpp"
+#include "wz4lib/vorbisplayer.hpp"
 #include "util/painter.hpp"
 #include "util/taskscheduler.hpp"
 #include "extra/blobheap.hpp"
 #include "extra/freecam.hpp"
 
 #include "selector_win.hpp"
-#include "vorbisplayer.hpp"
 
 /****************************************************************************/
 

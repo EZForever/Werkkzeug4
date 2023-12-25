@@ -19,7 +19,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="altona_config.hpp" />
     <ClInclude Include="screens4\config.hpp" />
     <ClInclude Include="screens4\HtmlRenderer.hpp" />
     <ClInclude Include="screens4\image_win.hpp" />
@@ -27,7 +26,6 @@
     <ClInclude Include="screens4\playlists.hpp" />
     <ClInclude Include="screens4\pugiconfig.hpp" />
     <ClInclude Include="screens4\pugixml.hpp" />
-    <ClInclude Include="screens4\vorbisplayer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="screens4\icon.rc" />
@@ -40,7 +38,6 @@
     <ClCompile Include="screens4\network.cpp" />
     <ClCompile Include="screens4\playlists.cpp" />
     <ClCompile Include="screens4\pugixml.cpp" />
-    <ClCompile Include="screens4\vorbisplayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />

@@ -19,7 +19,6 @@
     <ClInclude Include="screens4\image_win.hpp" />
     <ClInclude Include="screens4\network.hpp" />
     <ClInclude Include="screens4\playlists.hpp" />
-    <ClInclude Include="screens4\vorbisplayer.hpp" />
     <ClInclude Include="screens4\pugiconfig.hpp">
       <Filter>3rdparty\pugixml</Filter>
     </ClInclude>
@@ -27,7 +26,6 @@
       <Filter>3rdparty\pugixml</Filter>
     </ClInclude>
     <ClInclude Include="screens4\HtmlRenderer.hpp" />
-    <ClInclude Include="altona_config.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="screens4\image_win.cpp" />
@@ -35,7 +33,6 @@
     <ClCompile Include="screens4\movieplayer_win7.cpp" />
     <ClCompile Include="screens4\network.cpp" />
     <ClCompile Include="screens4\playlists.cpp" />
-    <ClCompile Include="screens4\vorbisplayer.cpp" />
     <ClCompile Include="screens4\pugixml.cpp">
       <Filter>3rdparty\pugixml</Filter>
     </ClCompile>

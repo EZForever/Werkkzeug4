@@ -519,6 +519,9 @@
     <ClCompile Include="altona\base\graphics_blank.cpp">
       <Filter>altona\base</Filter>
     </ClCompile>
+    <ClCompile Include="altona\wz4lib\vorbisplayer.cpp">
+      <Filter>wz4\wz4lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="altona\base\graphics.hpp">
@@ -988,6 +991,9 @@
     </ClInclude>
     <ClInclude Include="altona\base\graphics_dx11_private.hpp">
       <Filter>altona\base</Filter>
+    </ClInclude>
+    <ClInclude Include="altona\wz4lib\vorbisplayer.hpp">
+      <Filter>wz4\wz4lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
