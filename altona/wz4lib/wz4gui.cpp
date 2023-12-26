@@ -19,6 +19,7 @@
 #include "wz4lib/version.hpp"
 
 #include "wz4lib/basic_ops.hpp"
+#include "wz4lib/v2stub.hpp"
 #include "wz4lib/view.hpp"
 #include "wz4lib/script.hpp"
 #include "wz4lib/wiki.hpp"
@@ -1655,7 +1656,7 @@ void MainWindow::CmdDocOptions()
     coni->ChangeMsg = sMessage(this,&MainWindow::CmdChangeTimeline);
     coni->Default = 32;
     gh.Box(L"auto",sMessage(this,&MainWindow::CmdMusicLength));
-    gh.Label(L"Music (ogg)");
+    gh.Label(sCONFIG_LIBV2?L"Music (ogg/v2m)":L"Music (ogg)");
     gh.String(&Doc->DocOptions.MusicFile);
     gh.Box(L"...",sMessage(this,&MainWindow::CmdMusicDialog));
     gh.Box(L"reload",sMessage(this,&MainWindow::CmdReloadMusic));
@@ -1819,7 +1820,7 @@ void MainWindow::CmdEditTheme()
 
 void MainWindow::CmdMusicDialog()
 {
-  sOpenFileDialog(L"Open Music File",L"ogg",sSOF_LOAD,Doc->DocOptions.MusicFile,sMessage(this,&MainWindow::CmdMusicDialog2),sMessage());
+  sOpenFileDialog(L"Open Music File",sCONFIG_LIBV2?L"ogg|v2m":L"ogg",sSOF_LOAD,Doc->DocOptions.MusicFile,sMessage(this,&MainWindow::CmdMusicDialog2),sMessage());
 }
 
 void MainWindow::CmdMusicDialog2()
@@ -1854,24 +1855,50 @@ void MainWindow::CmdReloadMusic()
       sFile *cf=sCreateFile(cachefile,sFA_WRITE);
       if (oggdata&&cf)
       {
-        sInt error=0;
-        stb_vorbis *dec=stb_vorbis_open_memory(oggdata,oggsize,&error,0);
-        if (!error)
+        const sChar* ext = sFindFileExtension(Doc->DocOptions.MusicFile);
+        if (!sCmpStringI(ext, L"ogg"))
         {
-          const sInt BSIZE=65536;
-          sInt read;
-          sS16 buffer[BSIZE];
-          do
+          sInt error=0;
+          stb_vorbis *dec=stb_vorbis_open_memory(oggdata,oggsize,&error,0);
+          if (!error)
           {
-            read=stb_vorbis_get_samples_short_interleaved(dec,2,buffer,BSIZE);
-            cf->Write(buffer,4*read);
-          } while (read);
-          sDelete(cf);
-          sSetFileTime(cachefile,mfentry.LastWriteTime);
+            const sInt BSIZE=65536;
+            sInt read;
+            sS16 buffer[BSIZE];
+            do
+            {
+              read=stb_vorbis_get_samples_short_interleaved(dec,2,buffer,BSIZE);
+              cf->Write(buffer,4*read);
+            } while (read);
+          }
+          stb_vorbis_close(dec);
         }
-        stb_vorbis_close(dec);
+#if sCONFIG_LIBV2
+        else if (!sCmpStringI(ext, L"v2m"))
+        {
+          V2MPlayer* v2dec=new V2MPlayer;
+          v2dec->Init();
+          v2dec->Open(oggdata);
+          v2dec->Play();
+
+          sF32 samples[8192*2];
+          sS16 buffer[sCOUNTOF(samples)];
+          while (v2dec->IsPlaying())
+          {
+            v2dec->Render(samples,sCOUNTOF(samples)/2);
+            for (int i=0; i<sCOUNTOF(samples); i++)
+              buffer[i]=samples[i]*32768.0f;
+            cf->Write(buffer,2*sCOUNTOF(samples));
+          }
+
+          v2dec->Stop();
+          v2dec->Close();
+          sDelete(v2dec);
+        }
+#endif
       }
       sDelete(cf);
+      sSetFileTime(cachefile,mfentry.LastWriteTime);
       delete[] oggdata;
     }
 

@@ -85,15 +85,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <OutDir>$(SolutionDir)\bin\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\_build\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)\libv2\$(Platform)_$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <OutDir>$(SolutionDir)\bin\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\_build\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)\libv2\$(Platform)_$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

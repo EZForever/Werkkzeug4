@@ -38,6 +38,7 @@
 #define sCONFIG_RENDER_DX11
 
 #define sCONFIG_CEF 1
+#define sCONFIG_LIBV2 1
 #define sCONFIG_DPIAWARE 1
 
 #ifdef _DEBUG

@@ -7,6 +7,8 @@ bin
 .vs/
 cef/*
 !cef/PUT_CEF_HERE.txt
+libv2/*
+!libv2/PUT_LIBV2_HERE.txt
 
 altona/wz4lib/*_ops.?pp
 altona/wz4lib/wz4shaders.?pp

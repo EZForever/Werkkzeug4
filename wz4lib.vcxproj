@@ -78,6 +78,7 @@
     <ClCompile Include="altona\wz4lib\basic_ops.cpp" />
     <ClCompile Include="altona\wz4lib\build.cpp" />
     <ClCompile Include="altona\wz4lib\doc.cpp" />
+    <ClCompile Include="altona\wz4lib\v2stub.cpp" />
     <ClCompile Include="altona\wz4lib\vorbisplayer.cpp" />
     <ClCompile Include="altona\wz4lib\werkkzeug4.wire.cpp" />
     <ClCompile Include="altona\wz4lib\wz4gui.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="altona\wz4lib\basic_ops.hpp" />
     <ClInclude Include="altona\wz4lib\build.hpp" />
     <ClInclude Include="altona\wz4lib\doc.hpp" />
+    <ClInclude Include="altona\wz4lib\v2stub.hpp" />
     <ClInclude Include="altona\wz4lib\vorbisplayer.hpp" />
     <ClInclude Include="altona\wz4lib\werkkzeug4.wire.txt.h" />
     <ClInclude Include="altona\wz4lib\wz4gui.hpp" />

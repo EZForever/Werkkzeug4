@@ -68,11 +68,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\_build\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)\libv2\$(Platform)_$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(ProjectName)\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\_build\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)\libv2\$(Platform)_$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
