@@ -826,9 +826,14 @@ void sMain()
   sInt flags=sISF_2D|sISF_3D|sISF_CONTINUOUS; // need 2D for text rendering
   if(sGetShellSwitch(L"nodialog"))
   {
-    Selection.Mode.ScreenX = 640;
-    Selection.Mode.ScreenY = 480;
-    Selection.Mode.Aspect = 1.333333f;
+    Selection.Mode.ScreenX = opt.ScreenX;
+    Selection.Mode.ScreenY = opt.ScreenY;
+    Selection.Mode.Aspect = (sF32)opt.ScreenX / opt.ScreenY;
+    Selection.Loop = sFALSE;
+    Selection.Benchmark = sFALSE;
+    Selection.OneCoreForOS = sFALSE;
+    Selection.LowQuality = sFALSE;
+    Selection.HiddenPart = -1;
   }
   else
   {
