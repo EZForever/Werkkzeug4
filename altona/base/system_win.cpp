@@ -12,6 +12,7 @@
 /****************************************************************************/
 
 #pragma comment (lib, "dinput8.lib")
+#pragma comment (lib, "imm32.lib")
 
 #include "base/types.hpp"
 
@@ -83,6 +84,7 @@ HDC sGDIDC = 0;
 HDC sGDIDCOffscreen = 0;
 HWND sHWND = 0;
 HWND sExternalWindow = 0;
+HIMC sHIMC = 0;
 
 static sInt sInPaint = 0;
 
@@ -1950,6 +1952,7 @@ LRESULT WINAPI MsgProc(HWND win,UINT msg,WPARAM wparam,LPARAM lparam)
       if(sSystemFlags & sISF_3D)
         ExitGFX();
     }
+    ImmAssociateContext(win, sHIMC);
     PostQuitMessage(0);
     break;
 
@@ -1960,6 +1963,7 @@ LRESULT WINAPI MsgProc(HWND win,UINT msg,WPARAM wparam,LPARAM lparam)
       sGDIDCOffscreen = CreateCompatibleDC(hdc);
       ReleaseDC(sExternalWindow ? sExternalWindow : win,hdc);
       sDpiUpdate();
+      sHIMC = ImmAssociateContext(win, NULL);
     }
     break;
 
