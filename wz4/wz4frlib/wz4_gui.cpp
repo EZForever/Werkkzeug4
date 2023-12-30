@@ -551,7 +551,7 @@ void Wz4SplineCed::OnPaint2D(const sRect &client)
   Timeline0 = App->TimelineWin->LoopStart;
   Timeline1 = App->TimelineWin->LoopEnd;
 
-  sGui->BeginBackBuffer(Client);
+  //sGui->BeginBackBuffer(Client);
 
   // karopapier
 
@@ -688,7 +688,7 @@ void Wz4SplineCed::OnPaint2D(const sRect &client)
 
   // done
 
-  sGui->EndBackBuffer();
+  //sGui->EndBackBuffer();
 }
 
 sBool Wz4SplineCed::OnKey(sU32 key)
