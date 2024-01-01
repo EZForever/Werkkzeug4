@@ -90,6 +90,7 @@ public:
   void ResetWindows();
   void CmdBlinkTimer();
   void PrepareBackup();
+  void PrepareWiki();
 
   class WinPageList *PageListWin;
   class WinTreeView *TreeViewWin;
@@ -116,6 +117,7 @@ public:
   sTextBuffer PopupTextBuffer;
 
   class WikiHelper *Wiki;
+  sString<sMAXPATH> WikiPath;
 
   sArray<wOp *> AnimCurveOps;
   sArray<wOp *> AnimClipOps;
@@ -253,7 +255,6 @@ public:
   void StartStoreBrowser(const sMessage &cmd,const sChar *oldname,wType *filter);
   void PopupText(const sChar *);
 
-  const sChar *WikiPath;
   const sChar *UnitTestPath;
   const sChar *WikiCheckout;
 

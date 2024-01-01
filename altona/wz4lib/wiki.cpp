@@ -58,7 +58,7 @@ WikiHelper::~WikiHelper()
 {
   delete Parser;
   Close();
-  if(Commit)
+  if(sCONFIG_SVN && Commit)
   {
     Execute(L"svn add %s/*.wiki.txt");
     Execute(L"svn add %s/presets/*.preset");
@@ -156,14 +156,16 @@ void WikiHelper::InitSvn()
     if(!sCheckDir(WikiPath))
     {
       sMakeDirAll(WikiPath);
-      if(WikiCheckout)
+      if(sCONFIG_SVN && WikiCheckout)
         Execute(WikiCheckout);
     }
+#if sCONFIG_SVN
     if(Update)
     {
       Execute(L"svn update %s");
       Update = 0;
     }
+#endif
   }
 
   if(0) // for debugging

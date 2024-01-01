@@ -297,6 +297,7 @@ void MainWindow::MainInit()
 
   sGetCurrentDir(ProgramDir);
   PrepareBackup();
+  PrepareWiki();
 
   CmdLoadConfig();
 
@@ -545,6 +546,22 @@ void MainWindow::PrepareBackup()
       if(sScanInt(s,i) && *s=='#')
         BackupIndex = i;
     }
+  }
+}
+
+void MainWindow::PrepareWiki()
+{
+  if (!sCOMMANDLINE && WikiPath.IsEmpty())
+  {
+    WikiPath = ProgramDir;
+    WikiPath.AddPath(L"wiki");
+
+    sString<sMAXPATH> presets(WikiPath);
+    presets.AddPath(L"presets");
+    if (!sCheckDir(presets))
+      sMakeDirAll(presets);
+
+    Wiki->WikiPath = WikiPath;
   }
 }
 
@@ -3813,10 +3830,9 @@ void FilterPresetName(const sStringDesc &name,const sChar *s)
 
 void WinPara::CmdPreset()
 {
-  if(Op && App->WikiPath)
+  App->Wiki->InitSvn();
+  if(Op)
   {
-    App->Wiki->InitSvn();
-
     sDirEntry *ent;
     sString<sMAXPATH> path;
     sString<256> pattern;
@@ -3879,13 +3895,15 @@ void WinPara::CmdPresetDelete2(sDInt i)
 {
   sDirEntry *ent;
   sString<sMAXPATH> filename;
-  sString<sMAXPATH> svn;
   if(PresetDir.IsIndexValid(i))
   {
     ent = &PresetDir[i];
     filename.PrintF(L"%s/presets/%s",App->WikiPath,ent->Name);
+#if sCONFIG_SVN
+    sString<sMAXPATH> svn;
     svn.PrintF(L"svn delete %s --keep-local",filename);
     App->Wiki->Execute(svn);
+#endif
     sDeleteFile(filename);
     App->Wiki->SetCommit();
   }
