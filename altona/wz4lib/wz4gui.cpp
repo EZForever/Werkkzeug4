@@ -3813,9 +3813,10 @@ void FilterPresetName(const sStringDesc &name,const sChar *s)
 
 void WinPara::CmdPreset()
 {
-  App->Wiki->InitSvn();
-  if(Op)
+  if(Op && App->WikiPath)
   {
+    App->Wiki->InitSvn();
+
     sDirEntry *ent;
     sString<sMAXPATH> path;
     sString<256> pattern;
